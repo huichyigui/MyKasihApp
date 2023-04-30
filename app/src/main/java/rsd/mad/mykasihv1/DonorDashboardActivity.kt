@@ -48,6 +48,11 @@ class DonorDashboardActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(backPressCallback)
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        navController = findNavController(R.id.nav_host_fragment_activity_donee_dashboard)
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.nav_donor_home -> {

@@ -7,14 +7,14 @@
     tools:context=".ui.account.DoneeAccountFragment">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/ivDonorProfile"
+        android:id="@+id/ivDoneeProfile"
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:layout_margin="10dp"
         android:layout_marginTop="16dp"
         android:padding="5dp"
         android:scaleType="fitXY"
-        android:src="@drawable/placeholder"
+        android:src="@drawable/empty"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,17 +23,7 @@
         app:strokeWidth="1dp" />
 
     <TextView
-        android:id="@+id/textView35"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/change_pp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivDonorProfile" />
-
-    <TextView
-        android:id="@+id/lblDonorName"
+        android:id="@+id/lblDoneeName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -42,27 +32,27 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView35" />
+        app:layout_constraintTop_toBottomOf="@+id/ivDoneeProfile" />
 
     <TextView
-        android:id="@+id/lblDonorEmail"
+        android:id="@+id/lblDoneeEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="hungerspot@gmail.com"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblDonorName" />
+        app:layout_constraintTop_toBottomOf="@+id/lblDoneeName" />
 
     <ImageView
         android:id="@+id/btnEdit"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="148dp"
         android:src="@drawable/ic_edit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.531"
-        app:layout_constraintStart_toEndOf="@+id/lblDonorEmail"
+        app:layout_constraintHorizontal_bias="0.437"
+        app:layout_constraintStart_toEndOf="@+id/lblDoneeEmail"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
@@ -75,7 +65,7 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblDonorEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/lblDoneeEmail" />
 
     <LinearLayout
         android:layout_width="match_parent"

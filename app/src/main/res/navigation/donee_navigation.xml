@@ -7,19 +7,22 @@
 
     <fragment
         android:id="@+id/nav_donee_home"
-        android:name="rsd.mad.mykasihv1.ui.home.DonorHomeFragment"
+        android:name="rsd.mad.mykasihv1.ui.home.DoneeHomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_donee_home" >
         <action
             android:id="@+id/action_nav_donee_home_to_nav_donation_detail"
             app:destination="@id/nav_donation_detail" />
+        <action
+            android:id="@+id/action_nav_donee_home_to_nav_request_donation"
+            app:destination="@id/nav_request_donation" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_donee_community"
-        android:name="rsd.mad.mykasihv1.ui.community.DoneeCommunityFragment"
+        android:name="rsd.mad.mykasihv1.ui.community.CommunityFragment"
         android:label="@string/community"
-        tools:layout="@layout/fragment_donee_community" >
+        tools:layout="@layout/fragment_community" >
         <action
             android:id="@+id/action_nav_donee_community_to_nav_donee_leaderboard"
             app:destination="@id/nav_donee_leaderboard" />
@@ -33,6 +36,9 @@
         <action
             android:id="@+id/action_nav_donee_account_to_nav_my_claim"
             app:destination="@id/nav_my_claim" />
+        <action
+            android:id="@+id/action_nav_donee_account_to_nav_donee_edit_profile"
+            app:destination="@id/nav_donee_edit_profile" />
     </fragment>
     <fragment
         android:id="@+id/nav_donee_leaderboard"
@@ -49,4 +55,14 @@
         android:name="rsd.mad.mykasihv1.ui.history.MyClaimFragment"
         android:label="@string/my_claim"
         tools:layout="@layout/fragment_my_claim" />
+    <fragment
+        android:id="@+id/nav_donee_edit_profile"
+        android:name="rsd.mad.mykasihv1.ui.account.EditProfileFragment"
+        android:label="@string/edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/nav_request_donation"
+        android:name="rsd.mad.mykasihv1.ui.requestDonation.RequestDonationFragment"
+        android:label="@string/request_donation"
+        tools:layout="@layout/fragment_request_donation" />
 </navigation>

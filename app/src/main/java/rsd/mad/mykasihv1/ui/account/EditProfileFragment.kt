@@ -20,9 +20,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -107,12 +105,42 @@ class EditProfileFragment : Fragment() {
 
             if (isValid) {
                 if (currentPass.isNotEmpty() && newPass.isNotEmpty()) {
-//                    changePassword()
+                    changePassword()
                 }
                 if (imageUri == null) {
                     updateProfile("")
                 } else {
                     uploadImage()
+                }
+            }
+        }
+    }
+
+    private fun changePassword() {
+        val firebaseUser = auth.currentUser
+        val credential: AuthCredential =
+            EmailAuthProvider.getCredential(firebaseUser!!.email!!, currentPass)
+        firebaseUser?.reauthenticate(credential)?.addOnCompleteListener { task ->
+            when {
+                task.isSuccessful -> {
+                    firebaseUser.updatePassword(newPass).addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            toast("Password updated")
+
+                            // it is signing out the user from the current status once changing password is successful
+                            // it is changing the activity and going to the sign in page while clearing the backstack so the user cant come to the current state by back pressing
+
+                            auth.signOut()
+                            val i = Intent(activity, MainActivity::class.java)
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            startActivity(i)
+                            (activity as Activity?)!!.overridePendingTransition(0, 0)
+                        } else
+                            toast("Error password not updated")
+                    }
+                }
+                else -> {
+                    toast("Incorrect old password")
                 }
             }
         }
@@ -136,17 +164,41 @@ class EditProfileFragment : Fragment() {
 
     private fun updateProfile(uploadedImageUrl: String) {
         val firebaseUser = auth.currentUser
-        auth.signInWithEmailAndPassword(firebaseUser!!.email!!,
+        auth.signInWithEmailAndPassword(
+            firebaseUser!!.email!!,
             sharedPref.getString(getString(R.string.password), "")!!
         )
-            .addOnCompleteListener {  task->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     auth.currentUser!!.updateEmail(email)
-                        .addOnCompleteListener { task->
-                            if (task.isSuccessful)
-                                toast("Email updated successfully")
-                            else
-                                toast("Failed to update email")
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+//                                toast("Email updated successfully")
+                                val role = sharedPref.getString(getString(R.string.role), "")
+
+                                val hashMap: HashMap<String, Any> = HashMap()
+                                hashMap["name"] = "$name"
+                                hashMap["email"] = "$email"
+                                hashMap["mobile"] = "$mobile"
+                                hashMap["address"] = "$address"
+                                if (imageUri != null)
+                                    hashMap["profileImage"] = uploadedImageUrl
+
+                                database.getReference("Users").child(role!!).child(auth.uid!!)
+                                    .updateChildren(hashMap)
+                                    .addOnSuccessListener {
+                                        toast("Profile updated")
+                                    }
+                                    .addOnFailureListener {
+                                        toast("Failed to update profile due to ${it.message}")
+                                    }
+                            } else
+//                                toast("Failed to update email")
+                                when (task.exception) {
+                                    is FirebaseAuthUserCollisionException -> toast("This email is already in use")
+                                    is FirebaseAuthInvalidCredentialsException -> toast("Please enter a valid email")
+                                    else -> toast("Error")
+                                }
                         }
                 } else {
                     when (task.exception) {
@@ -155,25 +207,6 @@ class EditProfileFragment : Fragment() {
                         else -> toast("Error")
                     }
                 }
-            }
-
-        val role = sharedPref.getString(getString(R.string.role), "")
-
-        val hashMap: HashMap<String, Any> = HashMap()
-        hashMap["name"] = "$name"
-        hashMap["email"] = "$email"
-        hashMap["mobile"] = "$mobile"
-        hashMap["address"] = "$address"
-        if (imageUri != null)
-            hashMap["profileImage"] = uploadedImageUrl
-
-        database.getReference("Users").child(role!!).child(auth.uid!!)
-            .updateChildren(hashMap)
-            .addOnSuccessListener {
-                toast("Profile updated")
-            }
-            .addOnFailureListener {
-                toast("Failed to update profile due to ${it.message}")
             }
     }
 

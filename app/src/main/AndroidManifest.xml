@@ -23,6 +23,7 @@
             android:exported="false"
             android:label="@string/title_activity_donor_dashboard" />
         <activity
+            android:parentActivityName=".RegisterActivity"
             android:name=".Register2Activity"
             android:exported="false" />
         <activity

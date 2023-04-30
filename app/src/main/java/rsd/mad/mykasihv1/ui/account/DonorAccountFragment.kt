@@ -1,5 +1,6 @@
 package rsd.mad.mykasihv1.ui.account
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -51,11 +52,19 @@ class DonorAccountFragment : Fragment() {
 
             lblDonorName.text = sharedPref.getString(getString(R.string.name), "")
             lblDonorEmail.text = sharedPref.getString(getString(R.string.email), "")
+
             btnEdit.setOnClickListener { findNavController().navigate(R.id.action_nav_donor_account_to_nav_donor_edit_profile) }
             btnLogout.setOnClickListener {
                 auth.signOut()
-                startActivity(Intent(context, MainActivity::class.java))
+
+                val i = Intent(activity, MainActivity::class.java)
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(i)
+                (activity as Activity?)!!.overridePendingTransition(0, 0)
             }
+            btnMyDonation.setOnClickListener { findNavController().navigate(R.id.action_nav_donor_account_to_nav_my_donation) }
+            btnMyReward.setOnClickListener { findNavController().navigate(R.id.action_nav_donor_account_to_nav_my_reward) }
+            btnMyRedeem.setOnClickListener { findNavController().navigate(R.id.action_nav_donor_account_to_nav_my_redeem) }
         }
     }
 }

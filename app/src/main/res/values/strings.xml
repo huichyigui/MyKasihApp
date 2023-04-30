@@ -102,4 +102,9 @@
     <string name="title_activity_receiver_dashboard">ReceiverDashboardActivity</string>
     <string name="err_house">Invalid House Number</string>
     <string name="address_info">Address Info</string>
+    <string name="donee_name">Donee Name</string>
+    <string name="description">Description</string>
+    <string name="org_image">Organization Image</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="request_donation">Request Donation</string>
 </resources>

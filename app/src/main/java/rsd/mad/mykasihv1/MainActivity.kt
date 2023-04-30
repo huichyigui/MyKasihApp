@@ -90,6 +90,7 @@ class MainActivity : AppCompatActivity() {
                                     val mobile = value.child("mobile").value.toString()
                                     val address = value.child("address").value.toString()
                                     val profileImage = value.child("profileImage").value.toString()
+                                    var point = value.child("point").value.toString().toInt()
 
                                     with(sharedPref.edit()) {
                                         putString(getString(R.string.name), name)
@@ -99,6 +100,7 @@ class MainActivity : AppCompatActivity() {
                                         putString(getString(R.string.role), getString(R.string.donor))
                                         putString(getString(R.string.password), password)
                                         putString(getString(R.string.profileImage), profileImage)
+                                        putInt(getString(R.string.point), point)
                                         apply()
                                     }
 
@@ -157,8 +159,8 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     if (task.exception is FirebaseAuthInvalidUserException)
                         toast("User does not exist")
-                    else
-                        toast("Error")
+//                    else
+//                        toast("Error")
                 }
             }
     }
