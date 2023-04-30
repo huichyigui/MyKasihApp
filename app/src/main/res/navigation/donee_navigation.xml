@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation2"
+    app:startDestination="@+id/nav_donee_home">
+
+    <fragment
+        android:id="@+id/nav_donee_home"
+        android:name="rsd.mad.mykasihv1.ui.home.DonorHomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_donee_home" >
+        <action
+            android:id="@+id/action_nav_donee_home_to_nav_donation_detail"
+            app:destination="@id/nav_donation_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_donee_community"
+        android:name="rsd.mad.mykasihv1.ui.community.DoneeCommunityFragment"
+        android:label="@string/community"
+        tools:layout="@layout/fragment_donee_community" >
+        <action
+            android:id="@+id/action_nav_donee_community_to_nav_donee_leaderboard"
+            app:destination="@id/nav_donee_leaderboard" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_donee_account"
+        android:name="rsd.mad.mykasihv1.ui.account.DoneeAccountFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_donee_account" >
+        <action
+            android:id="@+id/action_nav_donee_account_to_nav_my_claim"
+            app:destination="@id/nav_my_claim" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_donee_leaderboard"
+        android:name="rsd.mad.mykasihv1.ui.community.LeaderboardFragment"
+        android:label="@string/leaderboard"
+        tools:layout="@layout/fragment_leaderboard" />
+    <fragment
+        android:id="@+id/nav_donation_detail"
+        android:name="rsd.mad.mykasihv1.ui.home.DonationDetailFragment"
+        android:label="@string/donation_details"
+        tools:layout="@layout/fragment_donation_detail" />
+    <fragment
+        android:id="@+id/nav_my_claim"
+        android:name="rsd.mad.mykasihv1.ui.history.MyClaimFragment"
+        android:label="@string/my_claim"
+        tools:layout="@layout/fragment_my_claim" />
+</navigation>

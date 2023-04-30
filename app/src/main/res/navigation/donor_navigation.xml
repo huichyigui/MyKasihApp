@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_donor_home">
+
+    <fragment
+        android:id="@+id/nav_donor_home"
+        android:name="rsd.mad.mykasihv1.ui.home.DonorHomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_donor_home" >
+        <action
+            android:id="@+id/action_nav_donor_home_to_nav_donee_details"
+            app:destination="@id/nav_donee_details" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_donor_community"
+        android:name="rsd.mad.mykasihv1.ui.community.DonorCommunityFragment"
+        android:label="@string/community"
+        tools:layout="@layout/fragment_donor_community" >
+        <action
+            android:id="@+id/action_nav_donor_community_to_nav_donor_leaderboard"
+            app:destination="@id/nav_donor_leaderboard" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_donor_account"
+        android:name="rsd.mad.mykasihv1.ui.account.DonorAccountFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_donor_account" >
+        <action
+            android:id="@+id/action_nav_donor_account_to_nav_donor_edit_profile"
+            app:destination="@id/nav_donor_edit_profile" />
+        <action
+            android:id="@+id/action_nav_donor_account_to_nav_my_donation"
+            app:destination="@id/nav_my_donation" />
+        <action
+            android:id="@+id/action_nav_donor_account_to_nav_my_redeem"
+            app:destination="@id/nav_my_redeem" />
+        <action
+            android:id="@+id/action_nav_donor_account_to_nav_my_reward"
+            app:destination="@id/nav_my_reward" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_donor_edit_profile"
+        android:name="rsd.mad.mykasihv1.ui.account.EditProfileFragment"
+        android:label="@string/edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/nav_my_donation"
+        android:name="rsd.mad.mykasihv1.ui.history.MyDonationFragment"
+        android:label="@string/my_donation"
+        tools:layout="@layout/fragment_my_donation" />
+    <fragment
+        android:id="@+id/nav_my_reward"
+        android:name="rsd.mad.mykasihv1.ui.history.MyRewardFragment"
+        android:label="@string/my_reward"
+        tools:layout="@layout/fragment_my_reward" />
+    <fragment
+        android:id="@+id/nav_my_redeem"
+        android:name="rsd.mad.mykasihv1.ui.history.MyRedeemFragment"
+        android:label="@string/my_redeem"
+        tools:layout="@layout/fragment_my_redeem" />
+    <fragment
+        android:id="@+id/nav_donee_details"
+        android:name="rsd.mad.mykasihv1.ui.home.DoneeDetailFragment"
+        android:label="fragment_donee_detail"
+        tools:layout="@layout/fragment_donee_detail" />
+    <fragment
+        android:id="@+id/nav_donor_leaderboard"
+        android:name="rsd.mad.mykasihv1.ui.community.LeaderboardFragment"
+        android:label="@string/leaderboard"
+        tools:layout="@layout/fragment_leaderboard" />
+</navigation>
