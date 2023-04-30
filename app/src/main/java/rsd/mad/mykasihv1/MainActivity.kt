@@ -89,12 +89,16 @@ class MainActivity : AppCompatActivity() {
                                     val name = value.child("name").value.toString()
                                     val mobile = value.child("mobile").value.toString()
                                     val address = value.child("address").value.toString()
+                                    val profileImage = value.child("profileImage").value.toString()
 
                                     with(sharedPref.edit()) {
                                         putString(getString(R.string.name), name)
+                                        putString(getString(R.string.email), email)
                                         putString(getString(R.string.mobile), mobile)
                                         putString(getString(R.string.address), address)
                                         putString(getString(R.string.role), getString(R.string.donor))
+                                        putString(getString(R.string.password), password)
+                                        putString(getString(R.string.profileImage), profileImage)
                                         apply()
                                     }
 
@@ -122,13 +126,16 @@ class MainActivity : AppCompatActivity() {
                                     val name = value.child("name").value.toString()
                                     val mobile = value.child("mobile").value.toString()
                                     val address = value.child("address").value.toString()
+                                    val profileImage = value.child("profileImage").value.toString()
 
                                     with(sharedPref.edit()) {
                                         putString(getString(R.string.name), name)
+                                        putString(getString(R.string.email), email)
                                         putString(getString(R.string.mobile), mobile)
                                         putString(getString(R.string.address), address)
                                         putString(getString(R.string.role), getString(R.string.donee))
                                         putString(getString(R.string.password), password)
+                                        putString(getString(R.string.profileImage), profileImage)
                                         apply()
                                     }
 

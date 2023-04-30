@@ -11,7 +11,12 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
 import rsd.mad.mykasihv1.MainActivity
 import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.FragmentDonorAccountBinding
@@ -37,8 +42,15 @@ class DonorAccountFragment : Fragment() {
         sharedPref = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
 
         with(binding) {
+            var profileImage = sharedPref.getString(getString(R.string.profileImage), "")
+            if (profileImage == "")
+                ivDonorProfile.setImageResource(R.drawable.empty)
+            else {
+                Picasso.with(context).load(profileImage).into(ivDonorProfile)
+            }
+
             lblDonorName.text = sharedPref.getString(getString(R.string.name), "")
-            lblDonorEmail.text = "${auth.currentUser!!.email}"
+            lblDonorEmail.text = sharedPref.getString(getString(R.string.email), "")
             btnEdit.setOnClickListener { findNavController().navigate(R.id.action_nav_donor_account_to_nav_donor_edit_profile) }
             btnLogout.setOnClickListener {
                 auth.signOut()

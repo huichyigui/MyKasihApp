@@ -7,7 +7,7 @@
     tools:context=".ui.community.DoneeCommunityFragment">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/shapeableImageView"
+        android:id="@+id/ivDonorProfile"
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:layout_margin="10dp"

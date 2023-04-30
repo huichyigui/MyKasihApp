@@ -80,7 +80,12 @@ class Register2Activity : AppCompatActivity() {
                                 .setValue(user)
                                 .addOnSuccessListener {
                                     toast("User registered")
-                                    startActivity(Intent(this@Register2Activity, MainActivity::class.java))
+                                    startActivity(
+                                        Intent(
+                                            this@Register2Activity,
+                                            MainActivity::class.java
+                                        )
+                                    )
                                     finish()
                                 }
                                 .addOnFailureListener { e ->

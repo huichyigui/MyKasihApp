@@ -6,7 +6,7 @@ class User {
     var mobile : String = ""
     var city : String = ""
     var address : String = ""
-    var profilePicture : String = ""
+    var profileImage : String = ""
     var point : Int = 0
 
     constructor(name: String, email: String, mobile: String, city: String, address: String) {
@@ -15,7 +15,7 @@ class User {
         this.mobile = mobile
         this.city = city
         this.address = address
-        profilePicture = ""
+        profileImage = ""
         point = 0
     }
 }

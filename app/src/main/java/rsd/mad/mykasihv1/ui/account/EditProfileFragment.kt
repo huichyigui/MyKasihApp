@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -19,19 +18,19 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.squareup.picasso.Picasso
 import rsd.mad.mykasihv1.MainActivity
 import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.FragmentEditProfileBinding
-import rsd.mad.mykasihv1.models.User
 
 class EditProfileFragment : Fragment() {
 
@@ -73,7 +72,6 @@ class EditProfileFragment : Fragment() {
     private var address = ""
     private var currentPass = ""
     private var newPass = ""
-
     private fun edit() {
         var isValid = true
 
@@ -151,7 +149,11 @@ class EditProfileFragment : Fragment() {
                                 toast("Failed to update email")
                         }
                 } else {
-                    toast("Sign in Error")
+                    when (task.exception) {
+                        is FirebaseAuthUserCollisionException -> toast("This email is already in use")
+                        is FirebaseAuthInvalidCredentialsException -> toast("Please enter a valid email")
+                        else -> toast("Error")
+                    }
                 }
             }
 
@@ -253,7 +255,13 @@ class EditProfileFragment : Fragment() {
                 binding.edtName.setText(getString(getString(R.string.name), ""))
                 binding.edtAddress.setText(getString(getString(R.string.address), ""))
                 binding.edtMobile.setText(getString(getString(R.string.mobile), ""))
-                binding.edtEmail.setText(firebaseUser.email)
+                binding.edtEmail.setText(getString(getString(R.string.email), ""))
+                var profileImage = sharedPref.getString(getString(R.string.profileImage), "")
+                if (profileImage == "")
+                    binding.ivProfile.setImageResource(R.drawable.empty)
+                else {
+                    Picasso.with(context).load(profileImage).into(binding.ivProfile)
+                }
             }
         }
     }
