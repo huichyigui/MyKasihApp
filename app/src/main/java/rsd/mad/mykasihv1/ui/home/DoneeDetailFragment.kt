@@ -1,5 +1,6 @@
 package rsd.mad.mykasihv1.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import com.squareup.picasso.Picasso
+import rsd.mad.mykasihv1.DonateFoodActivity
+import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.FragmentDoneeDetailBinding
 import rsd.mad.mykasihv1.models.RequestDonation
 
@@ -34,6 +37,12 @@ class DoneeDetailFragment : Fragment() {
         with(binding) {
             Picasso.with(context).load(donee!!.orgImage).into(ivDoneeOrgImage)
             tvDoneeDescription.text = donee!!.description
+            btnDonateDonor.setOnClickListener {
+                var intent = Intent(context, DonateFoodActivity::class.java)
+                intent.putExtra(getString(R.string.donee_id), donee!!.doneeId)
+                intent.putExtra(getString(R.string.timestamp), donee!!.timestamp)
+                startActivity(intent)
+            }
         }
     }
 }

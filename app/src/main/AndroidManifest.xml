@@ -18,7 +18,8 @@
             android:label="@string/forgot_password"/>
         <activity
             android:name=".DonateFoodActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/donate_food"/>
         <activity
             android:name=".DoneeDashboardActivity"
             android:exported="false"
