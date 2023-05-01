@@ -49,7 +49,7 @@ class DonorDashboardActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        navController = findNavController(R.id.nav_host_fragment_activity_donee_dashboard)
+        navController = findNavController(R.id.nav_host_fragment_activity_donor_dashboard)
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 

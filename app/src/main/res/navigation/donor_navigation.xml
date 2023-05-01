@@ -66,7 +66,7 @@
     <fragment
         android:id="@+id/nav_donee_details"
         android:name="rsd.mad.mykasihv1.ui.home.DoneeDetailFragment"
-        android:label="fragment_donee_detail"
+        android:label="@string/donee_details"
         tools:layout="@layout/fragment_donee_detail" />
     <fragment
         android:id="@+id/nav_donor_leaderboard"
