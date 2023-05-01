@@ -6,11 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -56,7 +55,7 @@ class DonorHomeFragment : Fragment() {
 
         doneeArrayList = ArrayList()
 
-        var ref = Firebase.database.getReference("RequestDonation")
+        val ref = Firebase.database.getReference("RequestDonation")
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (doneeIdSnapshot in snapshot.children) {

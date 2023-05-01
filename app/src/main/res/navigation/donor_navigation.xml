@@ -67,7 +67,11 @@
         android:id="@+id/nav_donee_details"
         android:name="rsd.mad.mykasihv1.ui.home.DoneeDetailFragment"
         android:label="@string/donee_details"
-        tools:layout="@layout/fragment_donee_detail" />
+        tools:layout="@layout/fragment_donee_detail" >
+        <argument
+            android:name="donee"
+            app:argType="rsd.mad.mykasihv1.models.RequestDonation" />
+    </fragment>
     <fragment
         android:id="@+id/nav_donor_leaderboard"
         android:name="rsd.mad.mykasihv1.ui.community.LeaderboardFragment"

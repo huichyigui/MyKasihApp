@@ -1,7 +1,6 @@
 package rsd.mad.mykasihv1.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,16 +8,17 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import rsd.mad.mykasihv1.DonorDashboardActivity
 import rsd.mad.mykasihv1.Helper
 import rsd.mad.mykasihv1.databinding.RowDoneeBinding
 import rsd.mad.mykasihv1.models.RequestDonation
+import rsd.mad.mykasihv1.ui.home.DonorHomeFragmentDirections
 
 class DoneeList : RecyclerView.Adapter<DoneeList.HolderDonee> {
 
     private val context: Context
     private val doneeArrayList: ArrayList<RequestDonation>
     private lateinit var binding: RowDoneeBinding
+
     constructor(context: Context, doneeArrayList: ArrayList<RequestDonation>) : super() {
         this.context = context
         this.doneeArrayList = doneeArrayList
@@ -46,8 +46,17 @@ class DoneeList : RecyclerView.Adapter<DoneeList.HolderDonee> {
         Picasso.with(context).load(orgImage).into(holder.ivDoneeImage)
         Helper.loadDoneeCity(doneeId = doneeId, holder.tvCity)
         holder.itemView.setOnClickListener {
-//            var action = DonorHomeFragmentDirections.actionNavDonorHomeToNavDoneeDetails()
-//            Navigation.findNavController(holder.itemView).navigate(action)
+
+//            val bundle = Bundle()
+//            bundle.putString("donee_id", doneeId)
+//            bundle.putString("donee_name", doneeName)
+//            bundle.putString("description", description)
+//            bundle.putString("org_image", orgImage)
+//            bundle.putLong("timestamp", timestamp)
+//            it.findNavController().navigate(R.id.action_nav_donee_home_to_nav_donation_detail, bundle)
+
+            var action = DonorHomeFragmentDirections.actionNavDonorHomeToNavDoneeDetails(model)
+            Navigation.findNavController(holder.itemView).navigate(action)
         }
     }
 
@@ -56,5 +65,4 @@ class DoneeList : RecyclerView.Adapter<DoneeList.HolderDonee> {
         var tvCity = binding.tvCity
         var ivDoneeImage = binding.ivDoneeImage
     }
-
 }

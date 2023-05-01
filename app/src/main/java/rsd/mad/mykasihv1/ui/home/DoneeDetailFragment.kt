@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.navArgs
-import rsd.mad.mykasihv1.R
+import androidx.navigation.fragment.NavHostFragment
+import com.squareup.picasso.Picasso
 import rsd.mad.mykasihv1.databinding.FragmentDoneeDetailBinding
+import rsd.mad.mykasihv1.models.RequestDonation
 
 class DoneeDetailFragment : Fragment() {
 
@@ -23,7 +25,15 @@ class DoneeDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val actionBar = (requireActivity() as AppCompatActivity).supportActionBar
-//        actionBar?.title = "${donee.doneeName}"
+        val args = NavHostFragment.findNavController(this).currentBackStackEntry?.arguments
+        val donee = args?.getSerializable("donee") as? RequestDonation
+
+        val actionBar = (requireActivity() as AppCompatActivity).supportActionBar
+        actionBar?.title = donee!!.doneeName
+
+        with(binding) {
+            Picasso.with(context).load(donee!!.orgImage).into(ivDoneeOrgImage)
+            tvDoneeDescription.text = donee!!.description
+        }
     }
 }
