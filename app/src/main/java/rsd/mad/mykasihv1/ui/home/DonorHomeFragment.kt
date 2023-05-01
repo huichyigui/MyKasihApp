@@ -1,46 +1,42 @@
 package rsd.mad.mykasihv1.ui.home
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import rsd.mad.mykasihv1.MainActivity
 import rsd.mad.mykasihv1.R
+import rsd.mad.mykasihv1.adapter.DoneeList
 import rsd.mad.mykasihv1.databinding.FragmentDonorHomeBinding
+import rsd.mad.mykasihv1.models.RequestDonation
+
 
 class DonorHomeFragment : Fragment() {
 
-    private var _binding: FragmentDonorHomeBinding? = null
+    private lateinit var binding: FragmentDonorHomeBinding
     private lateinit var sharedPref: SharedPreferences
     private lateinit var auth: FirebaseAuth
-    private var database = Firebase.database
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var doneeArrayList: ArrayList<RequestDonation>
+    private lateinit var doneeList: DoneeList
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
-        _binding = FragmentDonorHomeBinding.inflate(inflater, container, false)
-
+        binding = FragmentDonorHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -48,21 +44,34 @@ class DonorHomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         auth = Firebase.auth
-        sharedPref = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        sharedPref = requireActivity().getSharedPreferences(
+            getString(R.string.preference_file_key),
+            Context.MODE_PRIVATE
+        )
 
-        if (auth.currentUser == null) {
-            startActivity(Intent(context, MainActivity::class.java))
-            activity?.fragmentManager?.popBackStack()
-        } else {
-            with(sharedPref) {
-                binding.lblWelcomeDonor.text = "Welcome, ${getString(getString(R.string.name), "")}"
-                binding.lblAddressDonor.text = getString(getString(R.string.address), "")
-            }
+        with(sharedPref) {
+            binding.lblWelcomeDonor.text = "Welcome, ${getString(getString(R.string.name), "")}"
+            binding.lblAddressDonor.text = getString(getString(R.string.address), "")
         }
-    }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        doneeArrayList = ArrayList()
+
+        var ref = Firebase.database.getReference("RequestDonation")
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (doneeIdSnapshot in snapshot.children) {
+                    for (requestIdSnapshot in doneeIdSnapshot.children) {
+                        val model = requestIdSnapshot.getValue(RequestDonation::class.java)
+                        doneeArrayList.add(model!!)
+                    }
+                }
+                doneeList = DoneeList(requireActivity(), doneeArrayList)
+                binding.rvDonee.adapter = doneeList
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
     }
 }

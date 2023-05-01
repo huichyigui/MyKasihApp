@@ -89,18 +89,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtMobileRegister" />
 
-    <EditText
-        android:id="@+id/edtPasswordRegister"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordRegisterTil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:id="@+id/edtPasswordRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/textView9"
@@ -111,7 +124,7 @@
         android:text="@string/select_role"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtPasswordRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordRegisterTil" />
 
     <RadioGroup
         android:id="@+id/rgRole"

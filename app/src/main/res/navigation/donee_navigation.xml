@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_nav_donee_account_to_nav_donee_edit_profile"
             app:destination="@id/nav_donee_edit_profile" />
+        <action
+            android:id="@+id/action_nav_donee_account_to_nav_my_request"
+            app:destination="@id/nav_my_request" />
     </fragment>
     <fragment
         android:id="@+id/nav_donee_leaderboard"
@@ -65,4 +68,9 @@
         android:name="rsd.mad.mykasihv1.ui.requestDonation.RequestDonationFragment"
         android:label="@string/request_donation"
         tools:layout="@layout/fragment_request_donation" />
+    <fragment
+        android:id="@+id/nav_my_request"
+        android:name="rsd.mad.mykasihv1.ui.history.MyRequestFragment"
+        android:label="@string/my_request"
+        tools:layout="@layout/fragment_my_request" />
 </navigation>

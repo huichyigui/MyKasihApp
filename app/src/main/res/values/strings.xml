@@ -107,4 +107,6 @@
     <string name="org_image">Organization Image</string>
     <string name="upload_image">Upload Image</string>
     <string name="request_donation">Request Donation</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="my_request">My Request</string>
 </resources>

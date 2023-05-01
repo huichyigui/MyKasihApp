@@ -56,6 +56,7 @@ class DoneeAccountFragment : Fragment() {
                 startActivity(i)
                 (activity as Activity?)!!.overridePendingTransition(0, 0)
             }
+            btnMyRequest.setOnClickListener { findNavController().navigate(R.id.action_nav_donee_account_to_nav_my_request) }
             btnMyClaim.setOnClickListener { findNavController().navigate(R.id.action_nav_donee_account_to_nav_my_claim) }
         }
     }

@@ -1,5 +1,6 @@
 package rsd.mad.mykasihv1
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -22,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPref: SharedPreferences
-
+    private lateinit var progressDialog: ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -31,11 +33,22 @@ class MainActivity : AppCompatActivity() {
 
         auth = Firebase.auth
         sharedPref = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Please wait")
+        progressDialog.setCanceledOnTouchOutside(false)
 
         if (auth.currentUser != null)
             auth.signOut()
 
         binding.btnLogin.setOnClickListener { login() }
+        binding.btnForgotPass.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    ForgotPasswordActivity::class.java
+                )
+            )
+        }
         binding.hplRegister.setOnClickListener {
             startActivity(
                 Intent(
@@ -76,6 +89,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loginUser() {
+        progressDialog.setMessage("Logging in...")
+        progressDialog.show()
+
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -86,6 +102,8 @@ class MainActivity : AppCompatActivity() {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             for (value in snapshot.children) {
                                 if (value.key == auth.currentUser?.uid) {
+                                    progressDialog.dismiss()
+
                                     val name = value.child("name").value.toString()
                                     val mobile = value.child("mobile").value.toString()
                                     val address = value.child("address").value.toString()
@@ -125,6 +143,8 @@ class MainActivity : AppCompatActivity() {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             for (value in snapshot.children) {
                                 if (value.key == auth.currentUser?.uid) {
+                                    progressDialog.dismiss()
+
                                     val name = value.child("name").value.toString()
                                     val mobile = value.child("mobile").value.toString()
                                     val address = value.child("address").value.toString()
@@ -157,8 +177,11 @@ class MainActivity : AppCompatActivity() {
 
                     })
                 } else {
+                    progressDialog.dismiss()
                     if (task.exception is FirebaseAuthInvalidUserException)
                         toast("User does not exist")
+                    else if (task.exception is FirebaseAuthInvalidCredentialsException)
+                        toast("Invalid email/password")
 //                    else
 //                        toast("Error")
                 }

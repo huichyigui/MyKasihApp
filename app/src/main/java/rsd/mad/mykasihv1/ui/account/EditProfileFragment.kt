@@ -19,6 +19,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
@@ -188,6 +189,7 @@ class EditProfileFragment : Fragment() {
                                     .updateChildren(hashMap)
                                     .addOnSuccessListener {
                                         toast("Profile updated")
+                                        findNavController().popBackStack()
                                     }
                                     .addOnFailureListener {
                                         toast("Failed to update profile due to ${it.message}")

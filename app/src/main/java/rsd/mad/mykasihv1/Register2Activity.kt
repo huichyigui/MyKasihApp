@@ -1,5 +1,6 @@
 package rsd.mad.mykasihv1
 
+import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -19,7 +20,7 @@ class Register2Activity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegister2Binding
     private lateinit var auth: FirebaseAuth
-
+    private lateinit var progressDialog: ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegister2Binding.inflate(layoutInflater)
@@ -27,6 +28,9 @@ class Register2Activity : AppCompatActivity() {
         supportActionBar?.title = getString(R.string.address_info)
 
         auth = Firebase.auth
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Please wait")
+        progressDialog.setCanceledOnTouchOutside(false)
 
         binding.btnRegister.setOnClickListener { register() }
         binding.hplLogin2.setOnClickListener {
@@ -63,12 +67,18 @@ class Register2Activity : AppCompatActivity() {
             }
 
             if (isValid) {
+                progressDialog.setMessage("Creating account...")
+                progressDialog.show()
+
                 val name = intent.getStringExtra(getString(R.string.name)) ?: ""
                 val mobile = intent.getStringExtra(getString(R.string.mobile)) ?: ""
                 val email = intent.getStringExtra(getString(R.string.email)) ?: ""
                 val password = intent.getStringExtra(getString(R.string.password)) ?: ""
                 val role = intent.getStringExtra(getString(R.string.role)) ?: ""
                 val address = "$house $street"
+
+
+                progressDialog.setMessage("Saving user info")
 
                 auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                     if (it.isSuccessful) {
@@ -79,6 +89,7 @@ class Register2Activity : AppCompatActivity() {
                             database.getReference("Users").child(role).child(it1.uid)
                                 .setValue(user)
                                 .addOnSuccessListener {
+                                    progressDialog.dismiss()
                                     toast("User registered")
                                     startActivity(
                                         Intent(
@@ -89,10 +100,12 @@ class Register2Activity : AppCompatActivity() {
                                     finish()
                                 }
                                 .addOnFailureListener { e ->
+                                    progressDialog.dismiss()
                                     toast("Database error")
                                 }
                         }
                     } else {
+                        progressDialog.dismiss()
                         when (it.exception) {
                             is FirebaseAuthWeakPasswordException -> toast("Password should be at least of 6 characters")
                             is FirebaseAuthUserCollisionException -> toast("This email is already in use")

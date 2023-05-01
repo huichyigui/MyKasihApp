@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import rsd.mad.mykasihv1.MainActivity
 import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.FragmentDoneeHomeBinding
 import rsd.mad.mykasihv1.ui.requestDonation.RequestDonationFragment
@@ -35,6 +36,16 @@ class DoneeHomeFragment : Fragment() {
 
         auth = Firebase.auth
         sharedPref = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+
+        if (auth.currentUser == null) {
+            startActivity(Intent(context, MainActivity::class.java))
+            activity?.fragmentManager?.popBackStack()
+        } else {
+            with(sharedPref) {
+                binding.lblWelcomeDonee.text = "Welcome, ${getString(getString(R.string.name), "")}"
+                binding.lblDoneeAddress.text = getString(getString(R.string.address), "")
+            }
+        }
 
         with(binding) {
             fab.setOnClickListener { findNavController().navigate(R.id.action_nav_donee_home_to_nav_request_donation) }
