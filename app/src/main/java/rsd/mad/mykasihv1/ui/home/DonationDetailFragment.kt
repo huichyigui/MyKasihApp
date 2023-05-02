@@ -148,8 +148,19 @@ class DonationDetailFragment : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (donation in snapshot.children) {
                     donation.ref.updateChildren(hashMap)
-                    toast("Claimed successfully")
-                    findNavController().popBackStack()
+
+                    val donorRef = database.getReference("Users").child("Donor").child(donor.donorId)
+                    donorRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            val currentPoint = dataSnapshot.child("point").value as Long
+                            donorRef.child("point").setValue(currentPoint + 10)
+                            toast("Claimed successfully")
+                            findNavController().popBackStack()
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                        }
+                    })
                 }
             }
 
