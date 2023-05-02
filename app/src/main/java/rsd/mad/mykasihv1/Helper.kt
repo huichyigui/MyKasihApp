@@ -9,6 +9,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.random.Random
 
 class Helper:Application() {
     override fun onCreate() {
@@ -35,6 +36,13 @@ class Helper:Application() {
                         TODO("Not yet implemented")
                     }
                 })
+        }
+        fun generateRandomString(): String {
+            val charPool : List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+            return (1..6)
+                .map { kotlin.random.Random.nextInt(0, charPool.size) }
+                .map(charPool::get)
+                .joinToString("")
         }
     }
 }

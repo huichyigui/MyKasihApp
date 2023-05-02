@@ -74,6 +74,7 @@ class RequestDonationFragment : Fragment() {
 
     private var name = ""
     private var description = ""
+    private var pax = 0
     private var orgImage = ""
     private fun validateData() {
         var isValid = true
@@ -81,6 +82,7 @@ class RequestDonationFragment : Fragment() {
         with(binding) {
             name = edtDoneeName.text.toString().trim()
             description = edtDescription.text.toString().trim()
+            pax = edtPax.text.toString().toIntOrNull() ?: 0
 
             if (name.isEmpty()) {
                 edtDoneeName.error = getString(R.string.err_empty)
@@ -94,6 +96,11 @@ class RequestDonationFragment : Fragment() {
 
             if (imageUri == null) {
                 toast("Missing organization image")
+                isValid = false
+            }
+
+            if (pax <= 0) {
+                edtPax.error = getString(R.string.err_pax)
                 isValid = false
             }
 
@@ -117,7 +124,7 @@ class RequestDonationFragment : Fragment() {
                 val uploadedImageUrl = "${uriTask.result}"
 
                 val requestDonation =
-                    RequestDonation(auth.uid!!, name, description, uploadedImageUrl, timestamp)
+                    RequestDonation(auth.uid!!, name, description, pax, uploadedImageUrl, timestamp)
 
                 database.getReference("RequestDonation").child(auth.uid!!).child("$timestamp")
                     .setValue(requestDonation)

@@ -37,6 +37,7 @@ class DoneeDetailFragment : Fragment() {
         with(binding) {
             Picasso.with(context).load(donee!!.orgImage).into(ivDoneeOrgImage)
             tvDoneeDescription.text = donee!!.description
+            tvPax.text = "Pax: ${donee!!.pax}"
             btnDonateDonor.setOnClickListener {
                 var intent = Intent(context, DonateFoodActivity::class.java)
                 intent.putExtra(getString(R.string.donee_id), donee!!.doneeId)

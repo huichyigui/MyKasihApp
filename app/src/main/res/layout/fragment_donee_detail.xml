@@ -23,16 +23,25 @@
     <TextView
         android:id="@+id/tvDoneeDescription"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="YAYASAN FOOD BANK MALAYSIA (YFBM) is a charitable organisation governed by a Board of Trustees pursuant to the Trust Deed dated 22 December 2018 registered under Section 2 of the Trustee Act 1952. The foundation will be the catalyst for the effort to reduce food waste while addressing the issue of increasing cost of living, especially the poor or the B40"
+        android:text="@string/description"
         android:textAlignment="viewStart"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivDoneeOrgImage" />
+
+    <TextView
+        android:id="@+id/tvPax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/pax"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDoneeDescription" />
 
     <Button
         android:id="@+id/btnDonateDonor"

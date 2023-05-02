@@ -38,23 +38,12 @@ class DoneeList : RecyclerView.Adapter<DoneeList.HolderDonee> {
         val model = doneeArrayList[position]
         val doneeId = model.doneeId
         val doneeName = model.doneeName
-        val description = model.description
         val orgImage = model.orgImage
-        val timestamp = model.timestamp
 
         holder.tvDoneeName.text = doneeName
         Picasso.with(context).load(orgImage).into(holder.ivDoneeImage)
         Helper.loadDoneeCity(doneeId = doneeId, holder.tvCity)
         holder.itemView.setOnClickListener {
-
-//            val bundle = Bundle()
-//            bundle.putString("donee_id", doneeId)
-//            bundle.putString("donee_name", doneeName)
-//            bundle.putString("description", description)
-//            bundle.putString("org_image", orgImage)
-//            bundle.putLong("timestamp", timestamp)
-//            it.findNavController().navigate(R.id.action_nav_donee_home_to_nav_donation_detail, bundle)
-
             var action = DonorHomeFragmentDirections.actionNavDonorHomeToNavDoneeDetails(model)
             Navigation.findNavController(holder.itemView).navigate(action)
         }

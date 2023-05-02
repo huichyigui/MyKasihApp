@@ -82,6 +82,9 @@
     <string name="err_mobile">Invalid Mobile</string>
     <string name="err_address">Invalid Address</string>
     <string name="err_password">Invalid Password</string>
+    <string name="err_unit">Invalid Unit Amount</string>
+    <string name="err_kg">Invalid KG Amount</string>
+    <string name="err_rm">Invalid RM Amount</string>
 
     <string name="tblUser">Users</string>
     <string name="uid">Uid</string>
@@ -111,4 +114,7 @@
     <string name="my_request">My Request</string>
     <string name="donee_details">Donee Details</string>
     <string name="donee_id">Donee ID</string>
+    <string name="pax">Pax</string>
+    <string name="err_pax">Invalid Pax</string>
+    <string name="err_contribution">Please fill ONLY one Unit/ KG/ RM field</string>
 </resources>
