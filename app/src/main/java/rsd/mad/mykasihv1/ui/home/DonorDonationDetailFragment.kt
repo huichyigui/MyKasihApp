@@ -90,11 +90,11 @@ class DonorDonationDetailFragment : Fragment() {
                 val colProof1 = TextView(context)
                 colProof1.text = "Proof Image"
                 colProof1.setTypeface(null, Typeface.BOLD)
-                row.addView(colProof1)
+                rowProof.addView(colProof1)
 
                 val colProof2 = ImageView(context)
                 Picasso.with(context).load(donation!!.proofImage).into(colProof2)
-                row.addView(col2)
+                rowProof.addView(colProof2)
                 tblDonationDetail.addView(rowProof)
             }
         }

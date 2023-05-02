@@ -121,4 +121,5 @@
     <string name="delivery_proof_image">Delivery Proof Image</string>
     <string name="upload_proof_image">Upload Proof Image</string>
     <string name="err_token">Invalid Delivery Token</string>
+    <string name="claim_detail">Claim Detail</string>
 </resources>

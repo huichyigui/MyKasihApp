@@ -61,7 +61,11 @@
         android:id="@+id/nav_my_claim"
         android:name="rsd.mad.mykasihv1.ui.history.MyClaimFragment"
         android:label="@string/my_claim"
-        tools:layout="@layout/fragment_my_claim" />
+        tools:layout="@layout/fragment_my_claim" >
+        <action
+            android:id="@+id/action_nav_my_claim_to_nav_claim_detail"
+            app:destination="@id/nav_claim_detail" />
+    </fragment>
     <fragment
         android:id="@+id/nav_donee_edit_profile"
         android:name="rsd.mad.mykasihv1.ui.account.EditProfileFragment"
@@ -77,4 +81,13 @@
         android:name="rsd.mad.mykasihv1.ui.history.MyRequestFragment"
         android:label="@string/my_request"
         tools:layout="@layout/fragment_my_request" />
+    <fragment
+        android:id="@+id/nav_claim_detail"
+        android:name="rsd.mad.mykasihv1.ui.history.ClaimDetailFragment"
+        android:label="@string/claim_detail"
+        tools:layout="@layout/fragment_claim_detail" >
+        <argument
+            android:name="claim"
+            app:argType="rsd.mad.mykasihv1.models.Donation" />
+    </fragment>
 </navigation>
