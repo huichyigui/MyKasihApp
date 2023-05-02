@@ -5,6 +5,7 @@ import java.io.Serializable
 class Donation : Serializable {
     var donorId: String = ""
     var doneeId: String = ""
+    var requestId: String = ""
     var foodCategory: String = ""
     var foodPackaging: String = ""
     var amount: String = ""
@@ -19,6 +20,7 @@ class Donation : Serializable {
     constructor(
         donorId: String,
         doneeId: String,
+        requestId: String,
         foodCategory: String,
         foodPackaging: String,
         amount: String,
@@ -31,6 +33,7 @@ class Donation : Serializable {
     ) {
         this.donorId = donorId
         this.doneeId = doneeId
+        this.requestId = requestId
         this.foodCategory = foodCategory
         this.foodPackaging = foodPackaging
         this.amount = amount
@@ -42,6 +45,5 @@ class Donation : Serializable {
         this.proofImage = ""
         this.timestamp = timestamp
     }
-
 
 }

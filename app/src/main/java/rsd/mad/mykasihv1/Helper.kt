@@ -71,6 +71,21 @@ class Helper:Application() {
                 })
         }
 
+        fun loadPax(doneeId: String, requestId: String, tvPax : TextView) {
+            val ref = Firebase.database.getReference("RequestDonation").child(doneeId).child(requestId)
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val pax = snapshot.child("pax").value.toString()
+                    val doneeName = snapshot.child("doneeName").value.toString()
+                    tvPax.text = "Fed $pax people of $doneeName"
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+            })
+        }
+
         fun loadDonorImage(context: Context, donorId: String, ivDonor: ImageView) {
             val ref = Firebase.database.getReference("Users").child("Donor")
             ref.child(donorId)

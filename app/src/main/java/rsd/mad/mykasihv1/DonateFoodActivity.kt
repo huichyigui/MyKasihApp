@@ -26,7 +26,7 @@ class DonateFoodActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPref: SharedPreferences
     private var doneeId = ""
-    private var timestamp = 0
+    private var requestId = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDonateFoodBinding.inflate(layoutInflater)
@@ -36,7 +36,7 @@ class DonateFoodActivity : AppCompatActivity() {
         sharedPref = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
 
         doneeId = intent.getStringExtra(getString(R.string.donee_id)) ?: ""
-        timestamp = intent.getLongExtra(getString(R.string.timestamp), 0).toInt()
+        requestId = intent.getLongExtra(getString(R.string.timestamp), 0).toString()
 
         with(binding) {
             edtLocation.setText("${sharedPref.getString(getString(R.string.address), "")} ${sharedPref.getString(getString(R.string.city), "")}")
@@ -152,7 +152,7 @@ class DonateFoodActivity : AppCompatActivity() {
         val timestamp = System.currentTimeMillis()
 
         val database = Firebase.database
-        val donation = Donation(auth.uid!!, doneeId, category, packaging, amount, date, time, location, status, token, timestamp)
+        val donation = Donation(auth.uid!!, doneeId, requestId, category, packaging, amount, date, time, location, status, token, timestamp)
 
         var ref = database.getReference("Donation").push()
         ref.setValue(donation)

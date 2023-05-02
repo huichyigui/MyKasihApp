@@ -11,11 +11,18 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import rsd.mad.mykasihv1.MainActivity
 import rsd.mad.mykasihv1.R
+import rsd.mad.mykasihv1.adapter.ClaimList
+import rsd.mad.mykasihv1.adapter.CommunityList
 import rsd.mad.mykasihv1.databinding.FragmentCommunityBinding
+import rsd.mad.mykasihv1.models.Donation
 
 class CommunityFragment : Fragment() {
 
@@ -23,6 +30,9 @@ class CommunityFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPref: SharedPreferences
     private var role = ""
+
+    private lateinit var communityArrayList: ArrayList<Donation>
+    private lateinit var communityList: CommunityList
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,6 +48,7 @@ class CommunityFragment : Fragment() {
             getString(R.string.preference_file_key),
             Context.MODE_PRIVATE
         )
+        communityArrayList = ArrayList()
 
         loadUserInfo()
 
@@ -48,6 +59,25 @@ class CommunityFragment : Fragment() {
             else
                 btnLeaderboard.setOnClickListener { findNavController().navigate(R.id.action_nav_donee_community_to_nav_donee_leaderboard) }
         }
+
+        val ref = Firebase.database.getReference("Donation")
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                communityArrayList.clear()
+                for (post in snapshot.children) {
+                    if (post.child("status").value == "Received") {
+                        val model = post.getValue(Donation::class.java)
+                        communityArrayList.add(model!!)
+                    }
+                }
+                communityList = CommunityList(requireActivity(), communityArrayList)
+                binding.rvCommunity.adapter = communityList
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
     }
 
     private fun loadUserInfo() {
