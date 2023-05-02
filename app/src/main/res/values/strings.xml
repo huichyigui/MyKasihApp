@@ -117,4 +117,8 @@
     <string name="pax">Pax</string>
     <string name="err_pax">Invalid Pax</string>
     <string name="err_contribution">Please fill ONLY one Unit/ KG/ RM field</string>
+    <string name="delivery_token">Delivery Token</string>
+    <string name="delivery_proof_image">Delivery Proof Image</string>
+    <string name="upload_proof_image">Upload Proof Image</string>
+    <string name="err_token">Invalid Delivery Token</string>
 </resources>

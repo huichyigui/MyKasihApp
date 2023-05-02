@@ -1,60 +1,247 @@
 package rsd.mad.mykasihv1.ui.home
 
+import android.app.Activity
+import android.content.ContentValues
+import android.content.Intent
+import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import android.widget.TableRow
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import rsd.mad.mykasihv1.Helper
 import rsd.mad.mykasihv1.R
+import rsd.mad.mykasihv1.databinding.FragmentDonationDetailBinding
+import rsd.mad.mykasihv1.models.Donation
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DonationDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DonationDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var binding: FragmentDonationDetailBinding
+    private lateinit var auth: FirebaseAuth
+    private var database = Firebase.database
+    private var imageUri: Uri? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_donation_detail, container, false)
+        binding = FragmentDonationDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DonationDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DonationDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        auth = Firebase.auth
+
+        val args = NavHostFragment.findNavController(this).currentBackStackEntry?.arguments
+        val donor = args?.getSerializable("donor") as? Donation
+
+        with(binding) {
+            val rowDonation = TableRow(context)
+            val colDonation1 = TextView(context)
+            colDonation1.text = donor!!.foodCategory
+            rowDonation.addView(colDonation1)
+
+            val colDonation2 = TextView(context)
+            colDonation2.text = donor!!.amount
+            rowDonation.addView(colDonation2)
+            tblDonationInfo.addView(rowDonation)
+
+            val fieldName = arrayOf(
+                "Date",
+                "Time",
+                "Location"
+            )
+            val fieldValue = arrayOf(
+                donor!!.date,
+                donor!!.time,
+                donor!!.location
+            )
+
+            val tblRow = TableRow(context)
+            val colFirstPickup = TextView(context)
+            colFirstPickup.text = "Donor Name"
+            tblRow.addView(colFirstPickup)
+
+            val colFirstPickupValue = TextView(context)
+            Helper.loadDonorName(donor!!.donorId, colFirstPickupValue)
+            tblRow.addView(colFirstPickupValue)
+            tblPickupInfo.addView(tblRow)
+
+            for (i in fieldName.indices) {
+                val tableRow = TableRow(context)
+
+                val tvFieldName = TextView(context)
+                tvFieldName.text = fieldName[i]
+                tableRow.addView(tvFieldName)
+
+                val tvFieldValue = TextView(context)
+                tvFieldValue.text = fieldValue[i]
+                tableRow.addView(tvFieldValue)
+
+                tblPickupInfo.addView(tableRow)
+            }
+
+            btnUplaodProof.setOnClickListener { showImageAttach() }
+            btnClaimDonation.setOnClickListener { validateData() }
+        }
+    }
+
+
+    private fun validateData() {
+        val args = NavHostFragment.findNavController(this).currentBackStackEntry?.arguments
+        val donor = args?.getSerializable("donor") as? Donation
+        val actualToken = donor!!.token
+        val token = binding.edtToken.text.toString().trim()
+
+        var isValid = true
+
+        if (token.isEmpty()) {
+            binding.edtToken.error = getString(R.string.err_empty)
+            isValid = false
+        } else if (token != actualToken) {
+            binding.edtToken.error = getString(R.string.err_token)
+            isValid = false
+        }
+
+        if (imageUri == null) {
+            toast("Missing delivery proof image")
+            isValid = false
+        }
+
+        if (isValid) {
+            uploadImage()
+        }
+    }
+
+    private fun claimDonation(uploadedImageUrl: String) {
+        val args = NavHostFragment.findNavController(this).currentBackStackEntry?.arguments
+        val donor = args?.getSerializable("donor") as? Donation
+
+        val hashMap: HashMap<String, Any> = HashMap()
+        hashMap["status"] = "Received"
+        hashMap["proofImage"] = uploadedImageUrl
+
+        val ref = database.getReference("Donation")
+        ref.orderByChild("token").equalTo(donor!!.token).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (donation in snapshot.children) {
+                    donation.ref.updateChildren(hashMap)
+                    toast("Claimed successfully")
+                    findNavController().popBackStack()
                 }
             }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+    }
+
+    private fun uploadImage() {
+        val timestamp = System.currentTimeMillis()
+
+        val filePathAndName = "DonationProof/$timestamp"
+        var ref = Firebase.storage.getReference(filePathAndName)
+        ref.putFile(imageUri!!)
+            .addOnSuccessListener { taskSnapshot ->
+                val uriTask: Task<Uri> = taskSnapshot.storage.downloadUrl
+                while (!uriTask.isSuccessful);
+                val uploadedImageUrl = "${uriTask.result}"
+
+                claimDonation(uploadedImageUrl)
+            }
+            .addOnFailureListener {
+                toast("ERROR: Failed to upload image due to ${it.message}")
+            }
+    }
+
+    private fun showImageAttach() {
+        val popupMenu = PopupMenu(context, binding.btnUplaodProof)
+        popupMenu.menu.add(Menu.NONE, 0, 0, "Camera")
+        popupMenu.menu.add(Menu.NONE, 1, 1, "Gallery")
+        popupMenu.show()
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                0 -> pickImageCamera()
+                1 -> pickImageGallery()
+            }
+            true
+        }
+    }
+
+    private fun pickImageGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        galleryActivityResultLauncher.launch(intent)
+    }
+
+    private val galleryActivityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+        ActivityResultCallback<ActivityResult> { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data = result.data
+                imageUri = data!!.data
+
+                binding.ivProof.setImageURI(imageUri)
+            } else {
+                toast("Cancelled")
+            }
+        }
+    )
+
+    private fun pickImageCamera() {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.TITLE, "Temp_Title")
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Temp_Description")
+
+        imageUri = requireContext().contentResolver.insert(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            values
+        )
+
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+
+        cameraActivityResultLauncher.launch(intent)
+    }
+
+    private val cameraActivityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+        ActivityResultCallback<ActivityResult> { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data = result.data
+//                imageUri = data!!.data
+
+                binding.ivProof.setImageURI(imageUri)
+            } else {
+                toast("Cancelled")
+            }
+        }
+    )
+
+    private fun toast(s: String) {
+        Toast.makeText(context, s, Toast.LENGTH_SHORT).show()
     }
 }

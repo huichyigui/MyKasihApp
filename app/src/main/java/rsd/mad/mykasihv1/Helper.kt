@@ -1,12 +1,16 @@
 package rsd.mad.mykasihv1
 
 import android.app.Application
+import android.content.Context
+import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
+import rsd.mad.mykasihv1.models.Donation
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
@@ -51,8 +55,43 @@ class Helper:Application() {
                     }
                 })
         }
+
+        fun loadDonorName(donorId: String, tvDonorNameDonation: TextView) {
+            val ref = Firebase.database.getReference("Users").child("Donor")
+            ref.child(donorId)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val doneeName = snapshot.child("name").value.toString()
+                        tvDonorNameDonation.text = doneeName
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+
+                    }
+                })
+        }
+
+        fun loadDonorImage(context: Context, donorId: String, ivDonor: ImageView) {
+            val ref = Firebase.database.getReference("Users").child("Donor")
+            ref.child(donorId)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val donorImage = snapshot.child("profileImage").value.toString()
+                        if (donorImage != "") {
+                            Picasso.with(context).load(donorImage).into(ivDonor)
+                        } else {
+                            ivDonor.setImageResource(R.drawable.placeholder)
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+
+                    }
+                })
+        }
+
         fun generateRandomString(): String {
-            val charPool : List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+            val charPool : List<Char> = ('A'..'Z') + ('0'..'9')
             return (1..6)
                 .map { kotlin.random.Random.nextInt(0, charPool.size) }
                 .map(charPool::get)

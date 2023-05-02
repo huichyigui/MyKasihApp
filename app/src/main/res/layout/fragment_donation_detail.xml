@@ -27,57 +27,20 @@
             android:textStyle="bold" />
 
         <TableLayout
+            android:id="@+id/tblDonationInfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:stretchColumns="0,1">
-
-            <TableRow>
-
-                <TextView
-                    android:layout_column="0"
-                    android:padding="8dp"
-                    android:text="Dal" />
-
-                <TextView
-                    android:layout_column="0"
-                    android:padding="8dp"
-                    android:text="2 KG" />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
-                    android:layout_column="0"
-                    android:padding="8dp"
-                    android:text="Salad" />
-
-                <TextView
-                    android:layout_column="0"
-                    android:padding="8dp"
-                    android:text="0.25 KG" />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
-                    android:layout_column="0"
-                    android:padding="8dp"
-                    android:text="Okra Curry" />
-
-                <TextView
-                    android:layout_column="0"
-                    android:padding="8dp"
-                    android:text="1 KG" />
-            </TableRow>
         </TableLayout>
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="365dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -93,67 +56,15 @@
             android:textStyle="bold" />
 
         <TableLayout
+            android:id="@+id/tblPickupInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="0,1">
-
-            <TableRow>
-
-                <TextView
-                    android:layout_column="0"
-                    android:padding="8dp"
-                    android:text="@string/name" />
-
-                <TextView
-                    android:layout_column="0"
-                    android:padding="8dp"
-                    android:text="Alsalam Restaurant" />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
-                    android:layout_column="0"
-                    android:padding="8dp"
-                    android:text="@string/date" />
-
-                <TextView
-                    android:layout_column="0"
-                    android:padding="8dp"
-                    android:text="21 March 2023" />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
-                    android:layout_column="0"
-                    android:padding="8dp"
-                    android:text="@string/time" />
-
-                <TextView
-                    android:layout_column="0"
-                    android:padding="8dp"
-                    android:text="10 am - 12 pm" />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
-                    android:layout_column="0"
-                    android:padding="8dp"
-                    android:text="@string/location" />
-
-                <TextView
-                    android:layout_column="0"
-                    android:padding="8dp"
-                    android:text="4 10 Jln 1/82B Bangsar Utama" />
-            </TableRow>
-        </TableLayout>
+            android:stretchColumns="0,1"></TableLayout>
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btnClaimDonation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -163,5 +74,61 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/delivery_token"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+    <EditText
+        android:id="@+id/edtToken"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
+    <TextView
+        android:id="@+id/textView26"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/delivery_proof_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtToken" />
+
+    <Button
+        android:id="@+id/btnUplaodProof"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/upload_proof_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView26" />
+
+    <ImageView
+        android:id="@+id/ivProof"
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnUplaodProof" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

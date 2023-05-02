@@ -11,10 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import rsd.mad.mykasihv1.MainActivity
 import rsd.mad.mykasihv1.R
+import rsd.mad.mykasihv1.adapter.DonorList
 import rsd.mad.mykasihv1.databinding.FragmentDoneeHomeBinding
+import rsd.mad.mykasihv1.models.Donation
 import rsd.mad.mykasihv1.ui.requestDonation.RequestDonationFragment
 
 class DoneeHomeFragment : Fragment() {
@@ -22,6 +28,9 @@ class DoneeHomeFragment : Fragment() {
     private lateinit var binding: FragmentDoneeHomeBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPref: SharedPreferences
+
+    private lateinit var donorArrayList: ArrayList<Donation>
+    private lateinit var donorList: DonorList
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +59,28 @@ class DoneeHomeFragment : Fragment() {
         with(binding) {
             fab.setOnClickListener { findNavController().navigate(R.id.action_nav_donee_home_to_nav_request_donation) }
         }
+
+        donorArrayList = ArrayList()
+
+        val ref = Firebase.database.getReference("Donation")
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (donation in snapshot.children) {
+                    if (donation.child("status").value == "Pending") {
+                        val doneeId = donation.child("doneeId").value.toString()
+                        if (doneeId == auth.uid) {
+                            val model = donation.getValue(Donation::class.java)
+                            donorArrayList.add(model!!)
+                        }
+                    }
+                }
+                donorList = DonorList(requireActivity(), donorArrayList)
+                binding.rvDonor.adapter = donorList
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
     }
 
     override fun onDestroy() {

@@ -1,6 +1,8 @@
 package rsd.mad.mykasihv1.models
 
-class Donation {
+import java.io.Serializable
+
+class Donation : Serializable {
     var donorId: String = ""
     var doneeId: String = ""
     var foodCategory: String = ""
@@ -11,31 +13,8 @@ class Donation {
     var location: String = ""
     var status: String = ""
     var token: String = ""
+    var proofImage: String = ""
     var timestamp : Long = 0
-
-    constructor(
-        donorId: String,
-        doneeId: String,
-        foodCategory: String,
-        foodPackaging: String,
-        amount: String,
-        date: String,
-        time: String,
-        location: String,
-        status: String,
-        token: String
-    ) {
-        this.donorId = donorId
-        this.doneeId = doneeId
-        this.foodCategory = foodCategory
-        this.foodPackaging = foodPackaging
-        this.amount = amount
-        this.date = date
-        this.time = time
-        this.location = location
-        this.status = status
-        this.token = token
-    }
     constructor()
     constructor(
         donorId: String,
@@ -60,6 +39,9 @@ class Donation {
         this.location = location
         this.status = status
         this.token = token
+        this.proofImage = ""
         this.timestamp = timestamp
     }
+
+
 }
