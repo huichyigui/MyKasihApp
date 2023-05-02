@@ -149,9 +149,10 @@ class DonateFoodActivity : AppCompatActivity() {
 
     private fun donateFood() {
         val token = Helper.generateRandomString()
+        val timestamp = System.currentTimeMillis()
 
         val database = Firebase.database
-        val donation = Donation(auth.uid!!, doneeId, category, packaging, amount, date, time, location, status, token)
+        val donation = Donation(auth.uid!!, doneeId, category, packaging, amount, date, time, location, status, token, timestamp)
 
         var ref = database.getReference("Donation").push()
         ref.setValue(donation)

@@ -95,13 +95,13 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/textView26"
+                android:id="@+id/tvDoneeNameDonation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Hill Hotel" />
 
             <TextView
-                android:id="@+id/textView27"
+                android:id="@+id/tvLocationDonation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Fed 5 people of PJ Old Folks Care Centre" />
@@ -138,13 +138,13 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/textView28"
+                android:id="@+id/tvTimestampDonation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tesco Malaysia" />
 
             <TextView
-                android:id="@+id/textView29"
+                android:id="@+id/tvViewDetailDonation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Fed 150 people of Happy Old Folks Home" />

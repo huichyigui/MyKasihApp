@@ -93,7 +93,7 @@
                 android:src="@drawable/placeholder" />
 
             <TextView
-                android:id="@+id/textView26"
+                android:id="@+id/tvDoneeNameDonation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -102,7 +102,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView27"
+                android:id="@+id/tvLocationDonation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_location"
@@ -142,7 +142,7 @@
                 android:src="@drawable/placeholder" />
 
             <TextView
-                android:id="@+id/textView28"
+                android:id="@+id/tvTimestampDonation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -151,7 +151,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView29"
+                android:id="@+id/tvViewDetailDonation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_location"

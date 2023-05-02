@@ -33,7 +33,21 @@ class Helper:Application() {
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
+                    }
+                })
+        }
+
+        fun loadDoneeName(doneeId: String, tvDoneeNameDonation: TextView) {
+            val ref = Firebase.database.getReference("Users").child("Donee")
+            ref.child(doneeId)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val doneeName = snapshot.child("name").value.toString()
+                        tvDoneeNameDonation.text = doneeName
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+
                     }
                 })
         }
