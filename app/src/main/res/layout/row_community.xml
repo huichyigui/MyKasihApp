@@ -30,7 +30,7 @@
             android:id="@+id/ivProof"
             android:layout_width="140dp"
             android:layout_height="100dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:src="@drawable/placeholder"
             android:paddingTop="10dp"/>
     </LinearLayout>

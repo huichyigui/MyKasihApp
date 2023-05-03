@@ -35,7 +35,7 @@ class DoneeDetailFragment : Fragment() {
         actionBar?.title = donee!!.doneeName
 
         with(binding) {
-            Picasso.with(context).load(donee!!.orgImage).into(ivDoneeOrgImage)
+            Picasso.with(context).load(donee!!.orgImage).placeholder(R.drawable.progress_animation).error(R.drawable.try_later).into(ivDoneeOrgImage)
             tvDoneeDescription.text = donee!!.description
             tvPax.text = "Pax: ${donee!!.pax}"
             btnDonateDonor.setOnClickListener {

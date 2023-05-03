@@ -295,7 +295,7 @@ class EditProfileFragment : Fragment() {
                 if (profileImage == "")
                     binding.ivProfile.setImageResource(R.drawable.empty)
                 else {
-                    Picasso.with(context).load(profileImage).into(binding.ivProfile)
+                    Picasso.with(context).load(profileImage).placeholder(R.drawable.progress_animation).error(R.drawable.try_later).into(binding.ivProfile)
                 }
             }
         }

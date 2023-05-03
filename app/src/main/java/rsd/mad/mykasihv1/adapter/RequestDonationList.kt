@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import rsd.mad.mykasihv1.Helper
+import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.RowRequestsBinding
 import rsd.mad.mykasihv1.models.RequestDonation
 import kotlin.collections.ArrayList
@@ -40,7 +41,7 @@ class RequestDonationList : RecyclerView.Adapter<RequestDonationList.HolderReque
 
         holder.tvDoneeName.text = doneeName
         holder.tvDescription.text = description
-        Picasso.with(context).load(orgImage).into(holder.ivOrgImage)
+        Picasso.with(context).load(orgImage).placeholder(R.drawable.progress_animation).error(R.drawable.try_later).into(holder.ivOrgImage)
         holder.tvCreatedDate.text = Helper.convertLongToTime(timestamp)
     }
 

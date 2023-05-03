@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import rsd.mad.mykasihv1.Helper
+import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.RowCommunityBinding
 import rsd.mad.mykasihv1.models.Donation
 
@@ -39,7 +40,7 @@ class CommunityList : RecyclerView.Adapter<CommunityList.HolderCommunity> {
 
         Helper.loadDonorName(donorId = donorId, holder.tvDonorNameDonation)
         Helper.loadPax(doneeId = doneeId, requestId, holder.tvLocationDonation)
-        Picasso.with(context).load(proofImage).into(holder.ivProof)
+        Picasso.with(context).load(proofImage).placeholder(R.drawable.progress_animation).error(R.drawable.try_later).into(holder.ivProof)
     }
 
     inner class HolderCommunity(itemView: View) : RecyclerView.ViewHolder(itemView) {

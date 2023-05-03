@@ -100,7 +100,7 @@ class CommunityFragment : Fragment() {
                 if (profileImage == "")
                     binding.ivProfileCommunity.setImageResource(R.drawable.empty)
                 else {
-                    Picasso.with(context).load(profileImage).into(binding.ivProfileCommunity)
+                    Picasso.with(context).load(profileImage).placeholder(R.drawable.progress_animation).error(R.drawable.try_later).into(binding.ivProfileCommunity)
                 }
             }
         }

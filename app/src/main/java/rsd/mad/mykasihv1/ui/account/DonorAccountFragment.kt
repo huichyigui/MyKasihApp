@@ -47,7 +47,7 @@ class DonorAccountFragment : Fragment() {
             if (profileImage == "")
                 ivDonorProfile.setImageResource(R.drawable.empty)
             else {
-                Picasso.with(context).load(profileImage).into(ivDonorProfile)
+                Picasso.with(context).load(profileImage).placeholder(R.drawable.progress_animation).error(R.drawable.try_later).into(ivDonorProfile)
             }
 
             lblDonorName.text = sharedPref.getString(getString(R.string.name), "")

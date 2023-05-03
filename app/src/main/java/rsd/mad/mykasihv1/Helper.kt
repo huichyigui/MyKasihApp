@@ -93,7 +93,7 @@ class Helper:Application() {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val donorImage = snapshot.child("profileImage").value.toString()
                         if (donorImage != "") {
-                            Picasso.with(context).load(donorImage).into(ivDonor)
+                            Picasso.with(context).load(donorImage).placeholder(R.drawable.progress_animation).error(R.drawable.try_later).into(ivDonor)
                         } else {
                             ivDonor.setImageResource(R.drawable.placeholder)
                         }

@@ -9,6 +9,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import rsd.mad.mykasihv1.Helper
+import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.RowDoneeBinding
 import rsd.mad.mykasihv1.models.RequestDonation
 import rsd.mad.mykasihv1.ui.home.DonorHomeFragmentDirections
@@ -41,7 +42,7 @@ class DoneeList : RecyclerView.Adapter<DoneeList.HolderDonee> {
         val orgImage = model.orgImage
 
         holder.tvDoneeName.text = doneeName
-        Picasso.with(context).load(orgImage).into(holder.ivDoneeImage)
+        Picasso.with(context).load(orgImage).placeholder(R.drawable.progress_animation).error(R.drawable.try_later).into(holder.ivDoneeImage)
         Helper.loadDoneeCity(doneeId = doneeId, holder.tvCity)
         holder.itemView.setOnClickListener {
             var action = DonorHomeFragmentDirections.actionNavDonorHomeToNavDoneeDetails(model)
