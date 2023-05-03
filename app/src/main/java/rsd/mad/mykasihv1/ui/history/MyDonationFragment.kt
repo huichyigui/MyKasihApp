@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -50,6 +51,7 @@ class MyDonationFragment : Fragment() {
                         donationArrayList.add(model!!)
                     }
                 }
+                donationArrayList.reverse()
                 donationList = DonationList(requireActivity(), donationArrayList)
                 binding.rvDonation.adapter = donationList
             }

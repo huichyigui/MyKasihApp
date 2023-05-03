@@ -22,6 +22,10 @@
     <string name="donee_near_you">Donees near you</string>
     <string name="donate_food">Donate Food</string>
     <string name="category">Category of Food</string>
+    <string-array name="sort">
+        <item>Earliest to latest</item>
+        <item>Latest to earliest</item>
+    </string-array>
     <string-array name="categories">
         <item>Bread &amp; Pastries</item>
         <item>Fruit &amp; Vegetables</item>

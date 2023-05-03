@@ -49,6 +49,7 @@ class MyClaimFragment : Fragment() {
                         }
                     }
                 }
+                claimArrayList.reverse()
                 claimList = ClaimList(requireActivity(), claimArrayList)
                 binding.rvMyClaim.adapter = claimList
             }

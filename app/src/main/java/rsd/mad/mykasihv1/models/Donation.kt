@@ -45,5 +45,4 @@ class Donation : Serializable {
         this.proofImage = ""
         this.timestamp = timestamp
     }
-
 }

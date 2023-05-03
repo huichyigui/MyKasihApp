@@ -49,6 +49,7 @@ class MyRequestFragment : Fragment() {
                     val model = request.getValue(RequestDonation::class.java)
                     requestsArrayList.add(model!!)
                 }
+                requestsArrayList.reverse()
                 requestDonationList = RequestDonationList(requireActivity(), requestsArrayList)
                 binding.rvRequests.adapter = requestDonationList
             }

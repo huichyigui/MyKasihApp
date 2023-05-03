@@ -93,6 +93,7 @@ class DonorDonationDetailFragment : Fragment() {
                 rowProof.addView(colProof1)
 
                 val colProof2 = ImageView(context)
+                colProof2.scaleType = ImageView.ScaleType.CENTER_CROP
                 Picasso.with(context).load(donation!!.proofImage).placeholder(R.drawable.progress_animation).error(R.drawable.try_later).into(colProof2)
                 rowProof.addView(colProof2)
                 tblDonationDetail.addView(rowProof)
