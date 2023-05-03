@@ -1,5 +1,6 @@
 package rsd.mad.mykasihv1
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -91,12 +92,10 @@ class Register2Activity : AppCompatActivity() {
                                 .addOnSuccessListener {
                                     progressDialog.dismiss()
                                     toast("User registered")
-                                    startActivity(
-                                        Intent(
-                                            this@Register2Activity,
-                                            MainActivity::class.java
-                                        )
+                                    var i = Intent(this@Register2Activity, MainActivity::class.java
                                     )
+                                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                    startActivity(i)
                                     finish()
                                 }
                                 .addOnFailureListener { e ->
