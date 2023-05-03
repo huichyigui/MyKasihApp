@@ -7,12 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.FragmentMyRewardBinding
+import rsd.mad.mykasihv1.models.Redemption
 
 class MyRewardFragment : Fragment() {
 
@@ -34,9 +37,95 @@ class MyRewardFragment : Fragment() {
             getString(R.string.preference_file_key),
             Context.MODE_PRIVATE
         )
+        var points = 0
 
         with(binding) {
             lblReward.text = "${sharedPref.getInt(getString(R.string.point), 0)}"
+
+            btnRedeem1.setOnClickListener {
+                if(sharedPref.getInt(getString(R.string.point), 0) >= 500000){
+                    points = sharedPref.getInt(getString(R.string.point), 0) - 500000
+
+                    val role = sharedPref.getString(getString(R.string.role), "")
+
+                    val hashMap: HashMap<String, Any> = HashMap()
+                    hashMap["point"] = "$points"
+
+                    Firebase.database.getReference("Users").child(role!!).child(auth.uid!!)
+                        .updateChildren(hashMap)
+                        .addOnSuccessListener {
+                            Toast.makeText(context, "Voucher redeemed successfully", Toast.LENGTH_SHORT).show()
+                            findNavController().popBackStack()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(context, "Voucher failed to redeem", Toast.LENGTH_SHORT).show()
+                        }
+
+                    redemption(getString(R.string.voucher_1),"500000")
+                }else{
+                    Toast.makeText(context, "Insufficient points", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            btnRedeem2.setOnClickListener {
+                if(sharedPref.getInt(getString(R.string.point), 0) >= 100000){
+                    points = sharedPref.getInt(getString(R.string.point), 0) - 100000
+
+                    val role = sharedPref.getString(getString(R.string.role), "")
+
+                    val hashMap: HashMap<String, Any> = HashMap()
+                    hashMap["point"] = "$points"
+
+                    Firebase.database.getReference("Users").child(role!!).child(auth.uid!!)
+                        .updateChildren(hashMap)
+                        .addOnSuccessListener {
+                            Toast.makeText(context, "Voucher redeemed successfully", Toast.LENGTH_SHORT).show()
+                            findNavController().popBackStack()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(context, "Voucher failed to redeem", Toast.LENGTH_SHORT).show()
+                        }
+
+                    redemption(getString(R.string.voucher_2),"100000")
+                }else{
+                    Toast.makeText(context, "Insufficient points", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            btnRedeem3.setOnClickListener {
+                if(sharedPref.getInt(getString(R.string.point), 0) >= 10000){
+                    points = sharedPref.getInt(getString(R.string.point), 0) - 10000
+
+                    val role = sharedPref.getString(getString(R.string.role), "")
+
+                    val hashMap: HashMap<String, Any> = HashMap()
+                    hashMap["point"] = "$points"
+
+                    Firebase.database.getReference("Users").child(role!!).child(auth.uid!!)
+                        .updateChildren(hashMap)
+                        .addOnSuccessListener {
+                            Toast.makeText(context, "Voucher redeemed successfully", Toast.LENGTH_SHORT).show()
+                            findNavController().popBackStack()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(context, "Voucher failed to redeem", Toast.LENGTH_SHORT).show()
+                        }
+
+                    redemption(getString(R.string.voucher_3),"10000")
+                }else{
+                    Toast.makeText(context, "Insufficient points", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
+    }
+
+    private fun redemption(voucher: String, points: String) {
+        val timestamp = System.currentTimeMillis()
+
+        val database = Firebase.database
+        val redemption = Redemption(auth.uid!!, voucher, points, timestamp)
+
+        var ref = database.getReference("Redemption").push()
+        ref.setValue(redemption)
     }
 }

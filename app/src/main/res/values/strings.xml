@@ -78,6 +78,9 @@
     <string name="time">Time</string>
     <string name="location">Location</string>
     <string name="claim_donation">Claim Donation</string>
+    <string name="voucher_1">Plant 100 trees in your own name</string>
+    <string name="voucher_2">Donate RM 2000 worth of food for Afrika in your own name</string>
+    <string name="voucher_3">Free medical consultation for one month</string>
 
     <string name="err_empty">Missing required field</string>
     <string name="err_name">Invalid Name</string>
