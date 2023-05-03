@@ -126,4 +126,5 @@
     <string name="upload_proof_image">Upload Proof Image</string>
     <string name="err_token">Invalid Delivery Token</string>
     <string name="claim_detail">Claim Detail</string>
+    <string name="sort_filter"><![CDATA[Sort & Filter]]></string>
 </resources>

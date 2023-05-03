@@ -3,9 +3,11 @@ package rsd.mad.mykasihv1.ui.history
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.PopupMenu
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -41,6 +43,14 @@ class MyDonationFragment : Fragment() {
         auth = Firebase.auth
         donationArrayList = ArrayList()
 
+        showData("DESCENDING")
+
+        with(binding) {
+            btnSortDonation.setOnClickListener { showSortDialog() }
+        }
+    }
+
+    private fun showData(s: String) {
         var ref = Firebase.database.getReference("Donation")
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -51,7 +61,8 @@ class MyDonationFragment : Fragment() {
                         donationArrayList.add(model!!)
                     }
                 }
-                donationArrayList.reverse()
+                if (s == "DESCENDING")
+                    donationArrayList.reverse()
                 donationList = DonationList(requireActivity(), donationArrayList)
                 binding.rvDonation.adapter = donationList
             }
@@ -60,5 +71,28 @@ class MyDonationFragment : Fragment() {
 
             }
         })
+    }
+
+    private fun showSortDialog() {
+        val sort = resources.getStringArray(R.array.sort)
+
+        val popupMenu = PopupMenu(context, binding.btnSortDonation)
+        popupMenu.menu.add(Menu.NONE, 0, 0, "Earliest to latest")
+        popupMenu.menu.add(Menu.NONE, 1, 1, "Latest to earliest")
+        popupMenu.show()
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                0 -> {
+                    showData("ASCENDING")
+                    binding.btnSortDonation.text = sort[0]
+                }
+                1 -> {
+                    showData("DESCENDING")
+                    binding.btnSortDonation.text = sort[1]
+                }
+            }
+            true
+        }
     }
 }
