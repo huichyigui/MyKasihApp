@@ -54,10 +54,13 @@ class CommunityFragment : Fragment() {
 
         with(binding) {
             role = sharedPref.getString(getString(R.string.role), "")!!
-            if (role == getString(R.string.donor))
+            if (role == getString(R.string.donor)) {
+                lblPointCommunity.text = "${sharedPref.getInt(getString(R.string.point), 0)} points"
                 btnLeaderboard.setOnClickListener { findNavController().navigate(R.id.action_nav_donor_community_to_nav_donor_leaderboard) }
-            else
+            } else {
+                lblPointCommunity.visibility = View.GONE
                 btnLeaderboard.setOnClickListener { findNavController().navigate(R.id.action_nav_donee_community_to_nav_donee_leaderboard) }
+            }
         }
 
         val ref = Firebase.database.getReference("Donation")
