@@ -100,7 +100,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="190dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/placeholder" />
+                    android:src="@drawable/voucher_1" />
 
                 <TextView
                     android:id="@+id/textView49"
@@ -154,7 +154,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="190dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/placeholder" />
+                    android:src="@drawable/voucher_2" />
 
                 <TextView
                     android:id="@+id/textView51"
@@ -208,7 +208,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="190dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/placeholder" />
+                    android:src="@drawable/voucher_3" />
 
                 <TextView
                     android:id="@+id/textView6"
