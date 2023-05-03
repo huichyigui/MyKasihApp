@@ -1,5 +1,6 @@
 package rsd.mad.mykasihv1.ui.home
 
+import android.app.SearchManager
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,11 +8,12 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -23,7 +25,6 @@ import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.adapter.DoneeList
 import rsd.mad.mykasihv1.databinding.FragmentDonorHomeBinding
 import rsd.mad.mykasihv1.models.RequestDonation
-import java.lang.reflect.Executable
 
 
 class DonorHomeFragment : Fragment() {
