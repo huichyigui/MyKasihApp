@@ -41,7 +41,7 @@ class RedemptionList : RecyclerView.Adapter<RedemptionList.HolderRedemption> {
         val timestamp = model.timestamp
 
         holder.tvVoucher.text = voucher
-        holder.tvPoints.text = points
+        holder.tvPoints.text = "$points points"
         holder.tvTimestampRedemption.text = Helper.convertLongToTime(timestamp)
     }
 
