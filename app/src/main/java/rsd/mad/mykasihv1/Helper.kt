@@ -21,6 +21,10 @@ class Helper:Application() {
     }
 
     companion object {
+
+        const val BASE_URL = "https://fcm.googleapis.com"
+        const val SERVER_KEY = "AAAAmzTHaUM:APA91bExrZYH_KAQqBI6mqetP5laqMO2fRinP_zb2stOhEBW05_ux1USa6DPtd5DUW02ve10ZrC85vxHNxe--efzCAjFo31RdcrvVuqE43vXKEqkHsKxLpDo0N0RxkoH3nzBNseHY8qv"
+        const val CONTENT_TYPE = "application/json"
         fun convertLongToTime(time: Long): String {
             val date = Date(time)
             val format = SimpleDateFormat("yyyy.MM.dd HH:mm")

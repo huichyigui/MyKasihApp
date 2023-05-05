@@ -130,4 +130,5 @@
     <string name="err_token">Invalid Delivery Token</string>
     <string name="claim_detail">Claim Detail</string>
     <string name="sort_filter"><![CDATA[Sort & Filter]]></string>
+    <string name="device_token">Device Token</string>
 </resources>

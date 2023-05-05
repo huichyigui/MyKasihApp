@@ -8,6 +8,7 @@ class User {
     var address : String = ""
     var profileImage : String = ""
     var point : Int = 0
+    var device: String = ""
 
     constructor(name: String, email: String, mobile: String, city: String, address: String) {
         this.name = name
@@ -17,5 +18,6 @@ class User {
         this.address = address
         profileImage = ""
         point = 0
+        device = ""
     }
 }

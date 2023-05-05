@@ -2,11 +2,14 @@ package rsd.mad.mykasihv1.ui.home
 
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -30,17 +33,27 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import rsd.mad.mykasihv1.Helper
 import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.FragmentDonationDetailBinding
+import rsd.mad.mykasihv1.fcm.NotificationData
+import rsd.mad.mykasihv1.fcm.PushNotification
+import rsd.mad.mykasihv1.fcm.RetrofitInstance
 import rsd.mad.mykasihv1.models.Donation
 
 class DonationDetailFragment : Fragment() {
 
     private lateinit var binding: FragmentDonationDetailBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var sharedPref: SharedPreferences
     private var database = Firebase.database
     private var imageUri: Uri? = null
+
+    val TAG = "DonationDetailActivity"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,6 +66,7 @@ class DonationDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         auth = Firebase.auth
+        sharedPref = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
 
         val args = NavHostFragment.findNavController(this).currentBackStackEntry?.arguments
         val donor = args?.getSerializable("donor") as? Donation
@@ -139,6 +153,8 @@ class DonationDetailFragment : Fragment() {
         val args = NavHostFragment.findNavController(this).currentBackStackEntry?.arguments
         val donor = args?.getSerializable("donor") as? Donation
 
+        retrieveDeviceToken(donor!!)
+
         val hashMap: HashMap<String, Any> = HashMap()
         hashMap["status"] = "Received"
         hashMap["proofImage"] = uploadedImageUrl
@@ -154,6 +170,9 @@ class DonationDetailFragment : Fragment() {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             val currentPoint = dataSnapshot.child("point").value as Long
                             donorRef.child("point").setValue(currentPoint + 10)
+
+                            retrieveDeviceToken(donor)
+
                             toast("Claimed successfully")
                             findNavController().popBackStack()
                         }
@@ -254,5 +273,45 @@ class DonationDetailFragment : Fragment() {
 
     private fun toast(s: String) {
         Toast.makeText(context, s, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+            if(response.isSuccessful) {
+                Log.d(TAG, "Response: ${Gson().toJson(response)}")
+            } else {
+                Log.e(TAG, response.errorBody().toString())
+            }
+        } catch(e: Exception) {
+            Log.e(TAG, e.toString())
+        }
+    }
+
+    private fun retrieveDeviceToken(donation: Donation) {
+        val ref = database.getReference("Users").child("Donor").child(donation.donorId).child("device")
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val device = snapshot.value.toString()
+
+                val doneeName = sharedPref.getString(getString(R.string.name), "")
+                val recipientToken = sharedPref.getString(getString(R.string.device_token), "")
+                val title = "Thanks for your donation!"
+                val message = "$doneeName received ${donation.amount} of ${donation.foodCategory} from you!."
+
+                if (recipientToken!!.isNotEmpty()) {
+                    PushNotification(
+                        NotificationData(title, message),
+                        device
+                    ).also {
+                        sendNotification(it)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
     }
 }

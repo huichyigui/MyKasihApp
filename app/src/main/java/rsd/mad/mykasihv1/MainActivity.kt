@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import rsd.mad.mykasihv1.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPref: SharedPreferences
+    private var database = Firebase.database
     private lateinit var progressDialog: ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val database = Firebase.database
+
 
                     var ref = database.getReference("Users").child("Donor")
                     ref.addValueEventListener(object : ValueEventListener {
@@ -104,12 +106,15 @@ class MainActivity : AppCompatActivity() {
                                 if (value.key == auth.currentUser?.uid) {
                                     progressDialog.dismiss()
 
+                                    generateDeviceToken(value.key!!, "Donor")
+
                                     val name = value.child("name").value.toString()
                                     val mobile = value.child("mobile").value.toString()
                                     val address = value.child("address").value.toString()
                                     val city = value.child("city").value.toString()
                                     val profileImage = value.child("profileImage").value.toString()
                                     var point = value.child("point").value.toString().toInt()
+                                    var device = value.child("token").value.toString()
 
                                     with(sharedPref.edit()) {
                                         putString(getString(R.string.name), name)
@@ -121,6 +126,7 @@ class MainActivity : AppCompatActivity() {
                                         putString(getString(R.string.password), password)
                                         putString(getString(R.string.profileImage), profileImage)
                                         putInt(getString(R.string.point), point)
+                                        putString(getString(R.string.device_token), device)
                                         apply()
                                     }
 
@@ -147,11 +153,14 @@ class MainActivity : AppCompatActivity() {
                                 if (value.key == auth.currentUser?.uid) {
                                     progressDialog.dismiss()
 
+                                    generateDeviceToken(value.key!!, "Donee")
+
                                     val name = value.child("name").value.toString()
                                     val mobile = value.child("mobile").value.toString()
                                     val address = value.child("address").value.toString()
                                     val city = value.child("city").value.toString()
                                     val profileImage = value.child("profileImage").value.toString()
+                                    var device = value.child("token").value.toString()
 
                                     with(sharedPref.edit()) {
                                         putString(getString(R.string.name), name)
@@ -162,6 +171,7 @@ class MainActivity : AppCompatActivity() {
                                         putString(getString(R.string.role), getString(R.string.donee))
                                         putString(getString(R.string.password), password)
                                         putString(getString(R.string.profileImage), profileImage)
+                                        putString(getString(R.string.device_token), device)
                                         apply()
                                     }
 
@@ -194,5 +204,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun toast(s: String) {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun generateDeviceToken(uid: String, role: String) {
+        Firebase.messaging.token.addOnCompleteListener { task->
+            if (!task.isSuccessful) {
+                toast("Fetching FCM registration token failed")
+                return@addOnCompleteListener
+            }
+            val token = task.result
+            val tokenRef = database.getReference("Users").child(role).child(uid)
+            tokenRef.child("device").setValue(token.toString())
+        }
     }
 }

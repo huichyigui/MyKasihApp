@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -15,7 +16,14 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import rsd.mad.mykasihv1.databinding.ActivityDonateFoodBinding
+import rsd.mad.mykasihv1.fcm.NotificationData
+import rsd.mad.mykasihv1.fcm.PushNotification
+import rsd.mad.mykasihv1.fcm.RetrofitInstance
 import rsd.mad.mykasihv1.models.Donation
 import java.util.*
 import java.util.Calendar.*
@@ -25,8 +33,11 @@ class DonateFoodActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDonateFoodBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPref: SharedPreferences
+    private val database = Firebase.database
     private var doneeId = ""
     private var requestId = ""
+
+    val TAG = "DonateFoodActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDonateFoodBinding.inflate(layoutInflater)
@@ -151,16 +162,58 @@ class DonateFoodActivity : AppCompatActivity() {
         val token = Helper.generateRandomString()
         val timestamp = System.currentTimeMillis()
 
-        val database = Firebase.database
+        retrieveDeviceToken(doneeId)
+
         val donation = Donation(auth.uid!!, doneeId, requestId, category, packaging, amount, date, time, location, status, token, timestamp)
 
         var ref = database.getReference("Donation").push()
         ref.setValue(donation)
         toast("Your Donation Waiting For Its Donee")
+
         startActivity(Intent(this, DonorDashboardActivity::class.java))
     }
 
     private fun toast(s: String) {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+            if(response.isSuccessful) {
+                Log.d(TAG, "Response: ${Gson().toJson(response)}")
+            } else {
+                Log.e(TAG, response.errorBody().toString())
+            }
+        } catch(e: Exception) {
+            Log.e(TAG, e.toString())
+        }
+    }
+
+    private fun retrieveDeviceToken(doneeId: String) {
+        val ref = database.getReference("Users").child("Donee").child(doneeId).child("device")
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val device = snapshot.value.toString()
+
+                val donorName = sharedPref.getString(getString(R.string.name), "")
+                val recipientToken = sharedPref.getString(getString(R.string.device_token), "")
+                val title = "New Food Donation!"
+                val message = "$donorName donated $amount of $category to you!."
+
+                if (recipientToken!!.isNotEmpty()) {
+                    PushNotification(
+                        NotificationData(title, message),
+                        device
+                        ).also {
+                            sendNotification(it)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
     }
 }
