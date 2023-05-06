@@ -45,6 +45,7 @@ class DonorDonationDetailFragment : Fragment() {
             val fieldName = arrayOf(
                 "Category",
                 "Packaging",
+                "Contribution",
                 "Preferred Date",
                 "Preferred Time",
                 "Pickup Location",
@@ -53,6 +54,7 @@ class DonorDonationDetailFragment : Fragment() {
             val fieldValue = arrayOf(
                 donation!!.foodCategory,
                 donation!!.foodPackaging,
+                donation!!.amount,
                 donation!!.date,
                 donation!!.time,
                 donation!!.location,

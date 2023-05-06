@@ -15,6 +15,8 @@ import rsd.mad.mykasihv1.Helper
 import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.FragmentDoneeDetailBinding
 import rsd.mad.mykasihv1.models.RequestDonation
+import java.text.NumberFormat
+import java.util.*
 
 class DoneeDetailFragment : Fragment() {
 
@@ -38,7 +40,7 @@ class DoneeDetailFragment : Fragment() {
         with(binding) {
             Picasso.with(context).load(donee!!.orgImage).placeholder(R.drawable.progress_animation).error(R.drawable.try_later).into(ivDoneeOrgImage)
             tvDoneeDescription.text = donee!!.description
-            tvPax.text = "Pax: ${donee!!.pax}"
+            tvPax.text = "Pax: ${NumberFormat.getNumberInstance(Locale.US).format(donee!!.pax)}"
             Helper.loadDoneeContact(requireActivity(), donee!!.doneeId, tvContact)
             Helper.loadDoneeEmail(requireActivity(), donee!!.doneeId, tvEmail)
             btnDonateDonor.setOnClickListener {

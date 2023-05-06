@@ -13,6 +13,9 @@ import rsd.mad.mykasihv1.databinding.RowRedemptionBinding
 import rsd.mad.mykasihv1.models.Donation
 import rsd.mad.mykasihv1.models.Redemption
 import rsd.mad.mykasihv1.ui.history.MyDonationFragmentDirections
+import java.text.NumberFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class RedemptionList : RecyclerView.Adapter<RedemptionList.HolderRedemption> {
 
@@ -41,7 +44,7 @@ class RedemptionList : RecyclerView.Adapter<RedemptionList.HolderRedemption> {
         val timestamp = model.timestamp
 
         holder.tvVoucher.text = voucher
-        holder.tvPoints.text = "$points points"
+        holder.tvPoints.text = "${NumberFormat.getNumberInstance(Locale.US).format(points)} points"
         holder.tvTimestampRedemption.text = Helper.convertLongToTime(timestamp)
     }
 

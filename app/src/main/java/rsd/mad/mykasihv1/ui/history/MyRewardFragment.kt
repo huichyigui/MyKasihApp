@@ -16,6 +16,9 @@ import com.google.firebase.ktx.Firebase
 import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.FragmentMyRewardBinding
 import rsd.mad.mykasihv1.models.Redemption
+import java.text.NumberFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 class MyRewardFragment : Fragment() {
 
@@ -41,7 +44,7 @@ class MyRewardFragment : Fragment() {
         var points = 0
 
         with(binding) {
-            lblReward.text = "${sharedPref.getInt(getString(R.string.point), 0)}"
+            lblReward.text = "${NumberFormat.getNumberInstance(Locale.US).format(sharedPref.getInt(getString(R.string.point), 0))}"
 
             btnRedeem1.setOnClickListener {
                 if (sharedPref.getInt(getString(R.string.point), 0) >= 500000) {
@@ -50,12 +53,12 @@ class MyRewardFragment : Fragment() {
                     val role = sharedPref.getString(getString(R.string.role), "")
 
                     val hashMap: HashMap<String, Any> = HashMap()
-                    hashMap["point"] = "$points"
+                    hashMap["point"] = points
 
                     Firebase.database.getReference("Users").child(role!!).child(auth.uid!!)
                         .updateChildren(hashMap)
                         .addOnSuccessListener {
-                            redemption(getString(R.string.voucher_1), "500000")
+                            redemption(getString(R.string.voucher_1), 500000)
                             toast("Voucher redeemed successfully")
                             findNavController().popBackStack()
                         }
@@ -74,12 +77,12 @@ class MyRewardFragment : Fragment() {
                     val role = sharedPref.getString(getString(R.string.role), "")
 
                     val hashMap: HashMap<String, Any> = HashMap()
-                    hashMap["point"] = "$points"
+                    hashMap["point"] = points
 
                     Firebase.database.getReference("Users").child(role!!).child(auth.uid!!)
                         .updateChildren(hashMap)
                         .addOnSuccessListener {
-                            redemption(getString(R.string.voucher_2), "100000")
+                            redemption(getString(R.string.voucher_2), 100000)
                             toast("Voucher redeemed successfully")
                             findNavController().popBackStack()
                         }
@@ -98,12 +101,12 @@ class MyRewardFragment : Fragment() {
                     val role = sharedPref.getString(getString(R.string.role), "")
 
                     val hashMap: HashMap<String, Any> = HashMap()
-                    hashMap["point"] = "$points"
+                    hashMap["point"] = points
 
                     Firebase.database.getReference("Users").child(role!!).child(auth.uid!!)
                         .updateChildren(hashMap)
                         .addOnSuccessListener {
-                            redemption(getString(R.string.voucher_3), "10000")
+                            redemption(getString(R.string.voucher_3), 10000)
                             toast("Voucher redeemed successfully")
                             findNavController().popBackStack()
                         }
@@ -117,7 +120,7 @@ class MyRewardFragment : Fragment() {
         }
     }
 
-    private fun redemption(voucher: String, points: String) {
+    private fun redemption(voucher: String, points: Int) {
         val timestamp = System.currentTimeMillis()
 
         val database = Firebase.database

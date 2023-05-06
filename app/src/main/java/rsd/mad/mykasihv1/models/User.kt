@@ -10,6 +10,7 @@ class User {
     var point : Int = 0
     var device: String = ""
 
+    constructor()
     constructor(name: String, email: String, mobile: String, city: String, address: String) {
         this.name = name
         this.email = email
