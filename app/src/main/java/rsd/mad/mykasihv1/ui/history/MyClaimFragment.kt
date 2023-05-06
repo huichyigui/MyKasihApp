@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -83,10 +84,18 @@ class MyClaimFragment : Fragment() {
                         }
                     }
                 }
-                if (s == "DESCENDING")
-                    claimArrayList.reverse()
-                claimList = ClaimList(requireActivity(), claimArrayList)
-                binding.rvMyClaim.adapter = claimList
+                if (claimArrayList.isNotEmpty()) {
+                    if (s == "DESCENDING")
+                        claimArrayList.reverse()
+                    claimList = ClaimList(requireActivity(), claimArrayList)
+                    binding.rvMyClaim.adapter = claimList
+                    binding.tvViewCountClaim.isVisible = false
+                    binding.btnSortClaim.isVisible = true
+                } else {
+                    binding.tvViewCountClaim.text = getString(R.string.no_record)
+                    binding.tvViewCountClaim.isVisible = true
+                    binding.btnSortClaim.isVisible = false
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {

@@ -2,6 +2,12 @@ package rsd.mad.mykasihv1
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
+import android.graphics.Typeface
+import android.net.Uri
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.database.DataSnapshot
@@ -10,7 +16,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
-import rsd.mad.mykasihv1.models.Donation
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
@@ -52,6 +57,54 @@ class Helper:Application() {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val doneeName = snapshot.child("name").value.toString()
                         tvDoneeNameDonation.text = doneeName
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+
+                    }
+                })
+        }
+
+        fun loadDoneeContact(context: Context, doneeId: String, tvDoneeContact: TextView) {
+            val ref = Firebase.database.getReference("Users").child("Donee")
+            ref.child(doneeId)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val doneeContact = snapshot.child("mobile").value.toString()
+                        val boldSpan = StyleSpan(Typeface.BOLD)
+                        val builder = SpannableStringBuilder()
+                        builder.append("Contact: ")
+                        builder.append(doneeContact, boldSpan, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        tvDoneeContact.text = builder
+                        tvDoneeContact.setOnClickListener {
+                            var uri = Uri.parse("tel:$doneeContact")
+                            var callIntent = Intent(Intent.ACTION_DIAL, uri)
+                            context.startActivity(callIntent)
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+
+                    }
+                })
+        }
+
+        fun loadDoneeEmail(context: Context, doneeId: String, tvDoneeEmail: TextView) {
+            val ref = Firebase.database.getReference("Users").child("Donee")
+            ref.child(doneeId)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val doneeEmail = snapshot.child("email").value.toString()
+                        val boldSpan = StyleSpan(Typeface.BOLD)
+                        val builder = SpannableStringBuilder()
+                        builder.append("Email: ")
+                        builder.append(doneeEmail, boldSpan, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        tvDoneeEmail.text = builder
+                        tvDoneeEmail.setOnClickListener {
+                            var uri = Uri.parse("mailto:$doneeEmail")
+                            var emailIntent = Intent(Intent.ACTION_SENDTO, uri)
+                            context.startActivity(emailIntent)
+                        }
                     }
 
                     override fun onCancelled(error: DatabaseError) {

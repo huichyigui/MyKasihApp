@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -58,10 +59,18 @@ class MyRedeemFragment : Fragment() {
                         redemptionArrayList.add(model!!)
                     }
                 }
-                if (s == "DESCENDING")
-                    redemptionArrayList.reverse()
-                redemptionList = RedemptionList(requireActivity(), redemptionArrayList)
-                binding.rvRedemption.adapter = redemptionList
+                if (redemptionArrayList.isNotEmpty()) {
+                    if (s == "DESCENDING")
+                        redemptionArrayList.reverse()
+                    redemptionList = RedemptionList(requireActivity(), redemptionArrayList)
+                    binding.rvRedemption.adapter = redemptionList
+                    binding.tvViewCountRedeem.isVisible = false
+                    binding.btnSortRedeem.isVisible = true
+                } else {
+                    binding.tvViewCountRedeem.text = getString(R.string.no_record)
+                    binding.tvViewCountRedeem.isVisible = true
+                    binding.btnSortRedeem.isVisible = false
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {

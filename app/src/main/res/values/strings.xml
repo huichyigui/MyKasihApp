@@ -131,4 +131,6 @@
     <string name="claim_detail">Claim Detail</string>
     <string name="sort_filter"><![CDATA[Sort & Filter]]></string>
     <string name="device_token">Device Token</string>
+    <string name="contact_info">Contact Info</string>
+    <string name="no_record">No Record</string>
 </resources>

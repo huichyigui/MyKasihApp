@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -73,8 +74,14 @@ class CommunityFragment : Fragment() {
                         communityArrayList.add(model!!)
                     }
                 }
-                communityList = CommunityList(requireActivity(), communityArrayList)
-                binding.rvCommunity.adapter = communityList
+                if (communityArrayList.isNotEmpty()) {
+                    communityList = CommunityList(requireActivity(), communityArrayList)
+                    binding.rvCommunity.adapter = communityList
+                    binding.tvViewCountCommunity.isVisible = false
+                } else {
+                    binding.tvViewCountCommunity.text = getString(R.string.no_record)
+                    binding.tvViewCountCommunity.isVisible = true
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {

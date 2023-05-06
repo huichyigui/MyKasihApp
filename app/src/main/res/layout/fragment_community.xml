@@ -89,5 +89,16 @@
             app:layout_constraintTop_toBottomOf="@+id/divider2"
             tools:listitem="@layout/row_community" />
 
+    <TextView
+        android:id="@+id/tvViewCountCommunity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLeaderboard" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

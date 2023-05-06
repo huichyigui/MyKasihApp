@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -61,10 +62,18 @@ class MyDonationFragment : Fragment() {
                         donationArrayList.add(model!!)
                     }
                 }
-                if (s == "DESCENDING")
-                    donationArrayList.reverse()
-                donationList = DonationList(requireActivity(), donationArrayList)
-                binding.rvDonation.adapter = donationList
+                if (donationArrayList.isNotEmpty()) {
+                    if (s == "DESCENDING")
+                        donationArrayList.reverse()
+                    donationList = DonationList(requireActivity(), donationArrayList)
+                    binding.rvDonation.adapter = donationList
+                    binding.tvViewCount.isVisible = false
+                    binding.btnSortDonation.isVisible = true
+                } else {
+                    binding.tvViewCount.text = getString(R.string.no_record)
+                    binding.tvViewCount.isVisible = true
+                    binding.btnSortDonation.isVisible = false
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {

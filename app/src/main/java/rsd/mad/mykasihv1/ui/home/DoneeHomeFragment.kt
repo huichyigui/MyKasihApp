@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -74,8 +75,14 @@ class DoneeHomeFragment : Fragment() {
                         }
                     }
                 }
-                donorList = DonorList(requireActivity(), donorArrayList)
-                binding.rvDonor.adapter = donorList
+                if (donorArrayList.isNotEmpty()) {
+                    donorList = DonorList(requireActivity(), donorArrayList)
+                    binding.rvDonor.adapter = donorList
+                    binding.tvViewCountDonee.isVisible = false
+                } else {
+                    binding.tvViewCountDonee.text = getString(R.string.no_record)
+                    binding.tvViewCountDonee.isVisible = true
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {

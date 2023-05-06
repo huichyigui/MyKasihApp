@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import com.squareup.picasso.Picasso
 import rsd.mad.mykasihv1.DonateFoodActivity
+import rsd.mad.mykasihv1.Helper
 import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.FragmentDoneeDetailBinding
 import rsd.mad.mykasihv1.models.RequestDonation
@@ -38,6 +39,8 @@ class DoneeDetailFragment : Fragment() {
             Picasso.with(context).load(donee!!.orgImage).placeholder(R.drawable.progress_animation).error(R.drawable.try_later).into(ivDoneeOrgImage)
             tvDoneeDescription.text = donee!!.description
             tvPax.text = "Pax: ${donee!!.pax}"
+            Helper.loadDoneeContact(requireActivity(), donee!!.doneeId, tvContact)
+            Helper.loadDoneeEmail(requireActivity(), donee!!.doneeId, tvEmail)
             btnDonateDonor.setOnClickListener {
                 var intent = Intent(context, DonateFoodActivity::class.java)
                 intent.putExtra(getString(R.string.donee_id), donee!!.doneeId)

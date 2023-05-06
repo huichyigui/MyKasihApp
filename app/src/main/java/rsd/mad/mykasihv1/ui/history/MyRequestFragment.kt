@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -59,10 +60,18 @@ class MyRequestFragment : Fragment() {
                     val model = request.getValue(RequestDonation::class.java)
                     requestsArrayList.add(model!!)
                 }
-                if (s == "DESCENDING")
-                    requestsArrayList.reverse()
-                requestDonationList = RequestDonationList(requireActivity(), requestsArrayList)
-                binding.rvRequests.adapter = requestDonationList
+                if (requestsArrayList.isNotEmpty()) {
+                    if (s == "DESCENDING")
+                        requestsArrayList.reverse()
+                    requestDonationList = RequestDonationList(requireActivity(), requestsArrayList)
+                    binding.rvRequests.adapter = requestDonationList
+                    binding.tvViewCountRequest.isVisible = false
+                    binding.btnSortRequest.isVisible = true
+                } else {
+                    binding.tvViewCountRequest.text = getString(R.string.no_record)
+                    binding.tvViewCountRequest.isVisible = true
+                    binding.btnSortRequest.isVisible = false
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
