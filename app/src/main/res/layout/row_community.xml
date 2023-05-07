@@ -18,7 +18,8 @@
             android:id="@+id/tvDonorNameDonation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/donor" />
+            android:text="@string/donor"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvLocationDonation"
