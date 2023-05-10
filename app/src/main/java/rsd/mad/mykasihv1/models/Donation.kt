@@ -1,7 +1,6 @@
 package rsd.mad.mykasihv1.models
 
 import java.io.Serializable
-
 class Donation : Serializable {
     var donorId: String = ""
     var doneeId: String = ""

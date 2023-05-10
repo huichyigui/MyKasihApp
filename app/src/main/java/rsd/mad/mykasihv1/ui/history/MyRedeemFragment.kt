@@ -1,13 +1,16 @@
 package rsd.mad.mykasihv1.ui.history
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -27,6 +30,7 @@ class MyRedeemFragment : Fragment() {
 
     private lateinit var redemptionArrayList: ArrayList<Redemption>
     private lateinit var redemptionList: RedemptionList
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,17 +63,21 @@ class MyRedeemFragment : Fragment() {
                         redemptionArrayList.add(model!!)
                     }
                 }
-                if (redemptionArrayList.isNotEmpty()) {
-                    if (s == "DESCENDING")
-                        redemptionArrayList.reverse()
-                    redemptionList = RedemptionList(requireActivity(), redemptionArrayList)
-                    binding.rvRedemption.adapter = redemptionList
-                    binding.tvViewCountRedeem.isVisible = false
-                    binding.btnSortRedeem.isVisible = true
-                } else {
-                    binding.tvViewCountRedeem.text = getString(R.string.no_record)
-                    binding.tvViewCountRedeem.isVisible = true
-                    binding.btnSortRedeem.isVisible = false
+
+                // Ensure the fragment is attached to an activity before calling requireActivity()
+                activity?.let {
+                    if (redemptionArrayList.isNotEmpty()) {
+                        if (s == "DESCENDING")
+                            redemptionArrayList.reverse()
+                        redemptionList = RedemptionList(requireActivity(), redemptionArrayList)
+                        binding.rvRedemption.adapter = redemptionList
+                        binding.tvViewCountRedeem.isVisible = false
+                        binding.btnSortRedeem.isVisible = true
+                    } else {
+                        binding.tvViewCountRedeem.text = getString(R.string.no_record)
+                        binding.tvViewCountRedeem.isVisible = true
+                        binding.btnSortRedeem.isVisible = false
+                    }
                 }
             }
 
@@ -77,6 +85,18 @@ class MyRedeemFragment : Fragment() {
 
             }
         })
+    }
+
+    private var activity: AppCompatActivity? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity = context as? AppCompatActivity
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        activity = null
     }
 
     private fun showSortDialog() {

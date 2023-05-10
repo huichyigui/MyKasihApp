@@ -3,11 +3,12 @@ package rsd.mad.mykasihv1.ui.history
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -16,15 +17,16 @@ import com.google.firebase.ktx.Firebase
 import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.FragmentMyRewardBinding
 import rsd.mad.mykasihv1.models.Redemption
+import rsd.mad.mykasihv1.room.RedemptionViewModel
 import java.text.NumberFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 class MyRewardFragment : Fragment() {
 
     private lateinit var binding: FragmentMyRewardBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPref: SharedPreferences
+    private val myRedemptionViewModel : RedemptionViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,7 +46,7 @@ class MyRewardFragment : Fragment() {
         var points = 0
 
         with(binding) {
-            lblReward.text = "${NumberFormat.getNumberInstance(Locale.US).format(sharedPref.getInt(getString(R.string.point), 0))}"
+            lblReward.text = NumberFormat.getNumberInstance(Locale.US).format(sharedPref.getInt(getString(R.string.point), 0))
 
             btnRedeem1.setOnClickListener {
                 if (sharedPref.getInt(getString(R.string.point), 0) >= 500000) {
@@ -124,10 +126,14 @@ class MyRewardFragment : Fragment() {
         val timestamp = System.currentTimeMillis()
 
         val database = Firebase.database
-        val redemption = Redemption(auth.uid!!, voucher, points, timestamp)
+        val ref = database.getReference("Redemption").push()
+        val key = ref.key.toString()
+        val redemption = Redemption(key, auth.uid!!, voucher, points, timestamp)
 
-        var ref = database.getReference("Redemption").push()
-        ref.setValue(redemption)
+        myRedemptionViewModel.addRedemption(redemption)
+        database.getReference("Redemption").child(key).setValue(redemption)
+//        ref.setValue(redemption)
+//        myRedemptionViewModel.uploadRedemption(key)
     }
 
     private fun toast(s: String) {
