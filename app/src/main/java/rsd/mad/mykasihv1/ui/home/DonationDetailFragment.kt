@@ -52,6 +52,7 @@ class DonationDetailFragment : Fragment() {
     private lateinit var sharedPref: SharedPreferences
     private var database = Firebase.database
     private var imageUri: Uri? = null
+    private var pointEarned = 0
 
     val TAG = "DonationDetailActivity"
     override fun onCreateView(
@@ -117,10 +118,7 @@ class DonationDetailFragment : Fragment() {
                 tblPickupInfo.addView(tableRow)
             }
 
-            btnUplaodProof.setOnClickListener {
-                pickImageCamera()
-//                showImageAttach()
-            }
+            btnUploadProof.setOnClickListener { pickImageCamera() }
             btnClaimDonation.setOnClickListener { validateData() }
         }
     }
@@ -152,6 +150,20 @@ class DonationDetailFragment : Fragment() {
         }
     }
 
+    private fun calPoints(amount:Int):Int{
+        var points = 0
+
+        when (amount) {
+            in 1 .. 49 -> points = 100
+            in 50 .. 100 -> points = 1000
+            in 101 .. 200 -> points = 5000
+            in 201 .. 500 -> points = 8000
+            else -> points = 10000
+        }
+
+        return points
+    }
+
     private fun claimDonation(uploadedImageUrl: String) {
         val args = NavHostFragment.findNavController(this).currentBackStackEntry?.arguments
         val donor = args?.getSerializable("donor") as? Donation
@@ -161,6 +173,10 @@ class DonationDetailFragment : Fragment() {
         val hashMap: HashMap<String, Any> = HashMap()
         hashMap["status"] = "Received"
         hashMap["proofImage"] = uploadedImageUrl
+
+        var points = donor.amount
+        points = points.replace(("[^\\d.]").toRegex(), "")
+        pointEarned = calPoints(points.toInt())
 
         val ref = database.getReference("Donation")
         ref.orderByChild("token").equalTo(donor!!.token).addListenerForSingleValueEvent(object : ValueEventListener {
@@ -172,7 +188,7 @@ class DonationDetailFragment : Fragment() {
                     donorRef.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             val currentPoint = dataSnapshot.child("point").value as Long
-                            donorRef.child("point").setValue(currentPoint + 10)
+                            donorRef.child("point").setValue(currentPoint + pointEarned)
 
                             retrieveDeviceToken(donor)
 
@@ -195,7 +211,7 @@ class DonationDetailFragment : Fragment() {
         val timestamp = System.currentTimeMillis()
 
         val filePathAndName = "DonationProof/$timestamp"
-        var ref = Firebase.storage.getReference(filePathAndName)
+        val ref = Firebase.storage.getReference(filePathAndName)
         ref.putFile(imageUri!!)
             .addOnSuccessListener { taskSnapshot ->
                 val uriTask: Task<Uri> = taskSnapshot.storage.downloadUrl
@@ -208,41 +224,6 @@ class DonationDetailFragment : Fragment() {
                 toast("ERROR: Failed to upload image due to ${it.message}")
             }
     }
-
-//    private fun showImageAttach() {
-//        val popupMenu = PopupMenu(context, binding.btnUplaodProof)
-//        popupMenu.menu.add(Menu.NONE, 0, 0, "Camera")
-//        popupMenu.menu.add(Menu.NONE, 1, 1, "Gallery")
-//        popupMenu.show()
-//
-//        popupMenu.setOnMenuItemClickListener { item ->
-//            when (item.itemId) {
-//                0 -> pickImageCamera()
-//                1 -> pickImageGallery()
-//            }
-//            true
-//        }
-//    }
-
-//    private fun pickImageGallery() {
-//        val intent = Intent(Intent.ACTION_PICK)
-//        intent.type = "image/*"
-//        galleryActivityResultLauncher.launch(intent)
-//    }
-
-//    private val galleryActivityResultLauncher = registerForActivityResult(
-//        ActivityResultContracts.StartActivityForResult(),
-//        ActivityResultCallback<ActivityResult> { result ->
-//            if (result.resultCode == Activity.RESULT_OK) {
-//                val data = result.data
-//                imageUri = data!!.data
-//
-//                binding.ivProof.setImageURI(imageUri)
-//            } else {
-//                toast("Cancelled")
-//            }
-//        }
-//    )
 
     private fun pickImageCamera() {
         val values = ContentValues()
@@ -265,7 +246,6 @@ class DonationDetailFragment : Fragment() {
         ActivityResultCallback<ActivityResult> { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data = result.data
-//                imageUri = data!!.data
 
                 binding.ivProof.setImageURI(imageUri)
             } else {

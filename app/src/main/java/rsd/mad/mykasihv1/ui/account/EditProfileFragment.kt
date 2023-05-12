@@ -106,12 +106,19 @@ class EditProfileFragment : Fragment() {
 
             if (isValid) {
                 if (currentPass.isNotEmpty() && newPass.isNotEmpty()) {
-                    changePassword()
+                    if (currentPass == newPass) {
+                        edtNewPass.error = "Current password and new password cannot be same"
+                        isValid = false
+                    } else {
+                        changePassword()
+                    }
                 }
-                if (imageUri == null) {
-                    updateProfile("")
-                } else {
-                    uploadImage()
+                if(isValid){
+                    if (imageUri == null) {
+                        updateProfile("")
+                    } else {
+                        uploadImage()
+                    }
                 }
             }
         }

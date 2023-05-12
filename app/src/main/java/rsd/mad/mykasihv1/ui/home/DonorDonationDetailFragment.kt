@@ -51,6 +51,7 @@ class DonorDonationDetailFragment : Fragment() {
                 "Preferred Time",
                 "Delivery Token",
                 "Pickup Location",
+                "Token",
                 "Status"
             )
             val fieldValue = arrayOf(
@@ -61,6 +62,7 @@ class DonorDonationDetailFragment : Fragment() {
                 donation!!.time,
                 donation!!.token,
                 donation!!.location,
+                donation!!.token,
                 donation!!.status
             )
 

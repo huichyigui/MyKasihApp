@@ -199,7 +199,6 @@ class RequestDonationFragment : Fragment() {
         ActivityResultCallback<ActivityResult> { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data = result.data
-//                imageUri = data!!.data
 
                 binding.ivDoneePreview.setImageURI(imageUri)
             } else {

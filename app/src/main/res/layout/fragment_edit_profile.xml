@@ -129,7 +129,7 @@
             <EditText
                 android:id="@+id/edtCurrentPass"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="50dp"
                 android:backgroundTint="@color/white"
                 android:ems="10"
                 android:inputType="textPassword"
@@ -155,7 +155,7 @@
             <EditText
                 android:id="@+id/edtNewPass"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="50dp"
                 android:backgroundTint="@color/white"
                 android:ems="10"
                 android:inputType="textPassword" />
