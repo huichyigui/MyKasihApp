@@ -56,18 +56,22 @@ class DonorHomeFragment : Fragment() {
 
         with(sharedPref) {
             binding.lblWelcomeDonor.text = "Welcome, ${getString(getString(R.string.name), "")}"
-            binding.lblAddressDonor.text = getString(getString(R.string.address), "")
+            binding.lblAddressDonor.text = getString(getString(R.string.city), "")
         }
 
         doneeArrayList = ArrayList()
+
+        val city = sharedPref.getString(getString(R.string.city), "")
 
         val ref = Firebase.database.getReference("RequestDonation")
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (doneeIdSnapshot in snapshot.children) {
                     for (requestIdSnapshot in doneeIdSnapshot.children) {
-                        val model = requestIdSnapshot.getValue(RequestDonation::class.java)
-                        doneeArrayList.add(model!!)
+                        if (requestIdSnapshot.child("city").value.toString() == city) {
+                            val model = requestIdSnapshot.getValue(RequestDonation::class.java)
+                            doneeArrayList.add(model!!)
+                        }
                     }
                 }
                 doneeList = DoneeList(requireActivity(), doneeArrayList)

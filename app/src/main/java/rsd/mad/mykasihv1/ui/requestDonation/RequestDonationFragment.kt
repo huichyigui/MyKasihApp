@@ -123,8 +123,10 @@ class RequestDonationFragment : Fragment() {
                 while (!uriTask.isSuccessful);
                 val uploadedImageUrl = "${uriTask.result}"
 
+                val city = "${sharedPref.getString(getString(R.string.city), "")}"
+
                 val requestDonation =
-                    RequestDonation(auth.uid!!, name, description, pax, uploadedImageUrl, timestamp)
+                    RequestDonation(auth.uid!!, name, description, pax, uploadedImageUrl, city, timestamp)
 
                 database.getReference("RequestDonation").child(auth.uid!!).child("$timestamp")
                     .setValue(requestDonation)

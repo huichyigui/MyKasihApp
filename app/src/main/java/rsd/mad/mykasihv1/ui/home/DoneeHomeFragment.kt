@@ -53,7 +53,7 @@ class DoneeHomeFragment : Fragment() {
         } else {
             with(sharedPref) {
                 binding.lblWelcomeDonee.text = "Welcome, ${getString(getString(R.string.name), "")}"
-                binding.lblDoneeAddress.text = getString(getString(R.string.address), "")
+                binding.lblDoneeAddress.text = getString(getString(R.string.city), "")
             }
         }
 

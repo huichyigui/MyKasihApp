@@ -88,7 +88,7 @@
     <string name="duplicate_email">The email address is already in use by another account.</string>
     <string name="err_mobile">Invalid Mobile</string>
     <string name="err_address">Invalid Address</string>
-    <string name="err_password">Invalid Password</string>
+    <string name="err_password">Password should be at least of 6 characters</string>
     <string name="err_unit">Invalid Unit Amount</string>
     <string name="err_kg">Invalid KG Amount</string>
     <string name="err_rm">Invalid RM Amount</string>
@@ -134,4 +134,33 @@
     <string name="contact_info">Contact Info</string>
     <string name="no_record">No Record</string>
     <string name="search_donee">Search Donee</string>
+
+    <string name="eg_name">e.g. John Doe</string>
+    <string name="eg_email">e.g. johndoe@gmail.com</string>
+    <string name="eg_mobile">e.g. 012-8525897</string>
+    <string name="hint_password">At least 6 characters</string>
+    <string name="err_same_password">Current password and new password cannot be same</string>
+
+    <string-array name="cities">
+        <item>Kuala Lumpur</item>
+        <item>George Town</item>
+        <item>Johor Bahru</item>
+        <item>Ipoh</item>
+        <item>Shah Alam</item>
+        <item>Petaling Jaya</item>
+        <item>Malacca City</item>
+        <item>Kota Kinabalu</item>
+        <item>Kuching</item>
+        <item>Alor Setar</item>
+        <item>Seremban</item>
+        <item>Kuantan</item>
+        <item>Taiping</item>
+        <item>Sungai Petani</item>
+        <item>Miri</item>
+        <item>Butterworth</item>
+        <item>Sandakan</item>
+        <item>Kuala Terengganu</item>
+        <item>Muar</item>
+        <item>Bintulu</item>
+    </string-array>
 </resources>

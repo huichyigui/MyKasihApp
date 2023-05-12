@@ -107,18 +107,15 @@ class EditProfileFragment : Fragment() {
             if (isValid) {
                 if (currentPass.isNotEmpty() && newPass.isNotEmpty()) {
                     if (currentPass == newPass) {
-                        edtNewPass.error = "Current password and new password cannot be same"
-                        isValid = false
-                    } else {
+                        edtNewPass.error = getString(R.string.err_same_password)
+                        return
+                    } else
                         changePassword()
-                    }
                 }
-                if(isValid){
-                    if (imageUri == null) {
-                        updateProfile("")
-                    } else {
-                        uploadImage()
-                    }
+                if (imageUri == null) {
+                    updateProfile("")
+                } else {
+                    uploadImage()
                 }
             }
         }
@@ -302,7 +299,9 @@ class EditProfileFragment : Fragment() {
                 if (profileImage == "")
                     binding.ivProfile.setImageResource(R.drawable.empty)
                 else {
-                    Picasso.with(context).load(profileImage).placeholder(R.drawable.progress_animation).error(R.drawable.try_later).into(binding.ivProfile)
+                    Picasso.with(context).load(profileImage)
+                        .placeholder(R.drawable.progress_animation).error(R.drawable.try_later)
+                        .into(binding.ivProfile)
                 }
             }
         }
