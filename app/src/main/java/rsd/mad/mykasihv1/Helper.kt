@@ -8,6 +8,7 @@ import android.net.Uri
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
+import android.util.DisplayMetrics
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.database.DataSnapshot
@@ -18,9 +19,9 @@ import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.random.Random
+import kotlin.math.roundToInt
 
-class Helper:Application() {
+class Helper : Application() {
     override fun onCreate() {
         super.onCreate()
     }
@@ -28,7 +29,8 @@ class Helper:Application() {
     companion object {
 
         const val BASE_URL = "https://fcm.googleapis.com"
-        const val SERVER_KEY = "AAAAmzTHaUM:APA91bExrZYH_KAQqBI6mqetP5laqMO2fRinP_zb2stOhEBW05_ux1USa6DPtd5DUW02ve10ZrC85vxHNxe--efzCAjFo31RdcrvVuqE43vXKEqkHsKxLpDo0N0RxkoH3nzBNseHY8qv"
+        const val SERVER_KEY =
+            "AAAAmzTHaUM:APA91bExrZYH_KAQqBI6mqetP5laqMO2fRinP_zb2stOhEBW05_ux1USa6DPtd5DUW02ve10ZrC85vxHNxe--efzCAjFo31RdcrvVuqE43vXKEqkHsKxLpDo0N0RxkoH3nzBNseHY8qv"
         const val CONTENT_TYPE = "application/json"
         fun convertLongToTime(time: Long): String {
             val date = Date(time)
@@ -36,7 +38,7 @@ class Helper:Application() {
             return format.format(date)
         }
 
-        fun loadDoneeCity(doneeId : String, tvCity : TextView) {
+        fun loadDoneeCity(doneeId: String, tvCity: TextView) {
             val ref = Firebase.database.getReference("Users").child("Donee")
             ref.child(doneeId)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -128,8 +130,9 @@ class Helper:Application() {
                 })
         }
 
-        fun loadPax(doneeId: String, requestId: String, tvPax : TextView) {
-            val ref = Firebase.database.getReference("RequestDonation").child(doneeId).child(requestId)
+        fun loadPax(doneeId: String, requestId: String, tvPax: TextView) {
+            val ref =
+                Firebase.database.getReference("RequestDonation").child(doneeId).child(requestId)
             ref.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val pax = snapshot.child("pax").value.toString()
@@ -150,7 +153,9 @@ class Helper:Application() {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val donorImage = snapshot.child("profileImage").value.toString()
                         if (donorImage != "") {
-                            Picasso.with(context).load(donorImage).placeholder(R.drawable.progress_animation).error(R.drawable.try_later).into(ivDonor)
+                            Picasso.with(context).load(donorImage)
+                                .placeholder(R.drawable.progress_animation)
+                                .error(R.drawable.try_later).into(ivDonor)
                         } else {
                             ivDonor.setImageResource(R.drawable.placeholder)
                         }
@@ -163,11 +168,15 @@ class Helper:Application() {
         }
 
         fun generateRandomString(): String {
-            val charPool : List<Char> = ('A'..'Z') + ('0'..'9')
+            val charPool: List<Char> = ('A'..'Z') + ('0'..'9')
             return (1..6)
                 .map { kotlin.random.Random.nextInt(0, charPool.size) }
                 .map(charPool::get)
                 .joinToString("")
         }
+
+        fun Int.toPx(context: Context) =
+            this * context.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT
+
     }
 }

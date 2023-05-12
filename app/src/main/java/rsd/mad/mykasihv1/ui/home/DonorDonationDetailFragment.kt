@@ -18,6 +18,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import rsd.mad.mykasihv1.Helper
+import rsd.mad.mykasihv1.Helper.Companion.toPx
 import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.FragmentDonorDonationDetailBinding
 import rsd.mad.mykasihv1.models.Donation
@@ -48,6 +49,7 @@ class DonorDonationDetailFragment : Fragment() {
                 "Contribution",
                 "Preferred Date",
                 "Preferred Time",
+                "Delivery Token",
                 "Pickup Location",
                 "Status"
             )
@@ -57,6 +59,7 @@ class DonorDonationDetailFragment : Fragment() {
                 donation!!.amount,
                 donation!!.date,
                 donation!!.time,
+                donation!!.token,
                 donation!!.location,
                 donation!!.status
             )
@@ -94,11 +97,16 @@ class DonorDonationDetailFragment : Fragment() {
                 colProof1.setTypeface(null, Typeface.BOLD)
                 rowProof.addView(colProof1)
 
+                val rowProof2 = TableRow(context)
                 val colProof2 = ImageView(context)
+                val layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 2f)
+                layoutParams.height =  200.toPx(requireContext())
+                colProof2.layoutParams = layoutParams
                 colProof2.scaleType = ImageView.ScaleType.CENTER_CROP
                 Picasso.with(context).load(donation!!.proofImage).placeholder(R.drawable.progress_animation).error(R.drawable.try_later).into(colProof2)
-                rowProof.addView(colProof2)
+                rowProof2.addView(colProof2)
                 tblDonationDetail.addView(rowProof)
+                tblDonationDetail.addView(rowProof2)
             }
         }
     }
