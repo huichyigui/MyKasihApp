@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -39,6 +40,20 @@ class DonorDashboardActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.nav_donee_details ||
+                destination.id == R.id.nav_donor_leaderboard ||
+                destination.id == R.id.nav_donor_edit_profile ||
+                destination.id == R.id.nav_my_donation ||
+                destination.id == R.id.nav_donor_donation_detail ||
+                destination.id == R.id.nav_my_redeem ||
+                destination.id == R.id.nav_my_reward
+            ) {
+                binding.navView.visibility = View.GONE
+            } else
+                binding.navView.visibility = View.VISIBLE
+        }
+
         val backPressCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val exitDialogFragment = ExitDialogFragment()
@@ -54,7 +69,7 @@ class DonorDashboardActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.nav_donor_home -> {
                 navController.navigate(R.id.nav_donor_home)
             }

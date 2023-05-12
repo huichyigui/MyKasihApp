@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +39,19 @@ class DoneeDashboardActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.nav_donee_leaderboard ||
+                destination.id == R.id.nav_donation_detail ||
+                destination.id == R.id.nav_request_donation ||
+                destination.id == R.id.nav_donee_edit_profile ||
+                destination.id == R.id.nav_my_request ||
+                destination.id == R.id.nav_my_claim ||
+                destination.id == R.id.nav_claim_detail) {
+                binding.navView.visibility = View.GONE
+            } else
+                binding.navView.visibility = View.VISIBLE
+        }
 
         val backPressCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
