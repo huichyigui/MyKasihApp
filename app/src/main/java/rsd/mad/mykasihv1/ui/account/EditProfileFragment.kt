@@ -96,21 +96,27 @@ class EditProfileFragment : Fragment() {
                 isValid = false
             }
 
+            val phoneRegex = Regex("^01\\d-\\d{7,8}$")
             if (mobile.isEmpty()) {
                 edtMobile.error = getString(R.string.err_empty)
                 isValid = false
-            } else if (!Patterns.PHONE.matcher(mobile).matches()) {
+            } else if (!phoneRegex.matches(mobile)) {
                 edtMobile.error = getString(R.string.err_mobile)
                 isValid = false
             }
 
             if (isValid) {
                 if (currentPass.isNotEmpty() && newPass.isNotEmpty()) {
+                    val passwordRegex = Regex(".{6,}")
                     if (currentPass == newPass) {
                         edtNewPass.error = getString(R.string.err_same_password)
                         return
-                    } else
+                    } else if (passwordRegex.matches(newPass)) {
+                        edtNewPass.error = getString(R.string.err_password)
+                        return
+                    } else {
                         changePassword()
+                    }
                 }
                 if (imageUri == null) {
                     updateProfile("")
