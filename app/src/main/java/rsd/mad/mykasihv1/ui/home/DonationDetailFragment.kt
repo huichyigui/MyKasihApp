@@ -225,6 +225,41 @@ class DonationDetailFragment : Fragment() {
             }
     }
 
+    //    private fun showImageAttach() {
+//        val popupMenu = PopupMenu(context, binding.btnUplaodProof)
+//        popupMenu.menu.add(Menu.NONE, 0, 0, "Camera")
+//        popupMenu.menu.add(Menu.NONE, 1, 1, "Gallery")
+//        popupMenu.show()
+//
+//        popupMenu.setOnMenuItemClickListener { item ->
+//            when (item.itemId) {
+//                0 -> pickImageCamera()
+//                1 -> pickImageGallery()
+//            }
+//            true
+//        }
+//    }
+
+//    private fun pickImageGallery() {
+//        val intent = Intent(Intent.ACTION_PICK)
+//        intent.type = "image/*"
+//        galleryActivityResultLauncher.launch(intent)
+//    }
+
+//    private val galleryActivityResultLauncher = registerForActivityResult(
+//        ActivityResultContracts.StartActivityForResult(),
+//        ActivityResultCallback<ActivityResult> { result ->
+//            if (result.resultCode == Activity.RESULT_OK) {
+//                val data = result.data
+//                imageUri = data!!.data
+//
+//                binding.ivProof.setImageURI(imageUri)
+//            } else {
+//                toast("Cancelled")
+//            }
+//        }
+//    )
+
     private fun pickImageCamera() {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, "Temp_Title")

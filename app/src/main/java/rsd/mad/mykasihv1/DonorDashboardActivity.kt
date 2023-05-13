@@ -54,21 +54,6 @@ class DonorDashboardActivity : AppCompatActivity() {
                 binding.navView.visibility = View.VISIBLE
         }
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.nav_donee_details -> navView.visibility = View.GONE
-                R.id.nav_donor_leaderboard -> navView.visibility = View.GONE
-                R.id.nav_donor_edit_profile -> navView.visibility = View.GONE
-                R.id.nav_my_donation -> navView.visibility = View.GONE
-                R.id.nav_donor_donation_detail -> navView.visibility = View.GONE
-                R.id.nav_my_redeem -> navView.visibility = View.GONE
-                R.id.nav_my_reward -> navView.visibility = View.GONE
-                else -> {
-                    navView.visibility = View.VISIBLE
-                }
-            }
-        }
-
         val backPressCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val exitDialogFragment = ExitDialogFragment()

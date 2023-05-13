@@ -1,5 +1,6 @@
 package rsd.mad.mykasihv1.ui.history
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -27,6 +28,7 @@ class MyRewardFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPref: SharedPreferences
     private val myRedemptionViewModel : RedemptionViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,86 +40,24 @@ class MyRewardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        auth = Firebase.auth
         sharedPref = requireActivity().getSharedPreferences(
             getString(R.string.preference_file_key),
             Context.MODE_PRIVATE
         )
-        var points = 0
 
         with(binding) {
             lblReward.text = NumberFormat.getNumberInstance(Locale.US).format(sharedPref.getInt(getString(R.string.point), 0))
 
             btnRedeem1.setOnClickListener {
-                if (sharedPref.getInt(getString(R.string.point), 0) >= 500000) {
-                    points = sharedPref.getInt(getString(R.string.point), 0) - 500000
-
-                    val role = sharedPref.getString(getString(R.string.role), "")
-
-                    val hashMap: HashMap<String, Any> = HashMap()
-                    hashMap["point"] = points
-
-                    Firebase.database.getReference("Users").child(role!!).child(auth.uid!!)
-                        .updateChildren(hashMap)
-                        .addOnSuccessListener {
-                            redemption(getString(R.string.voucher_1), 500000)
-                            toast("Voucher redeemed successfully")
-                            findNavController().popBackStack()
-                        }
-                        .addOnFailureListener {
-                            toast("Voucher failed to redeem")
-                        }
-                } else {
-                    toast("Insufficient points")
-                }
+                redeem(500000,getString(R.string.voucher_1))
             }
 
             btnRedeem2.setOnClickListener {
-                if (sharedPref.getInt(getString(R.string.point), 0) >= 100000) {
-                    points = sharedPref.getInt(getString(R.string.point), 0) - 100000
-
-                    val role = sharedPref.getString(getString(R.string.role), "")
-
-                    val hashMap: HashMap<String, Any> = HashMap()
-                    hashMap["point"] = points
-
-                    Firebase.database.getReference("Users").child(role!!).child(auth.uid!!)
-                        .updateChildren(hashMap)
-                        .addOnSuccessListener {
-                            redemption(getString(R.string.voucher_2), 100000)
-                            toast("Voucher redeemed successfully")
-                            findNavController().popBackStack()
-                        }
-                        .addOnFailureListener {
-                            toast("Voucher failed to redeem")
-                        }
-                } else {
-                    toast("Insufficient points")
-                }
+                redeem(100000,getString(R.string.voucher_2))
             }
 
             btnRedeem3.setOnClickListener {
-                if (sharedPref.getInt(getString(R.string.point), 0) >= 10000) {
-                    points = sharedPref.getInt(getString(R.string.point), 0) - 10000
-
-                    val role = sharedPref.getString(getString(R.string.role), "")
-
-                    val hashMap: HashMap<String, Any> = HashMap()
-                    hashMap["point"] = points
-
-                    Firebase.database.getReference("Users").child(role!!).child(auth.uid!!)
-                        .updateChildren(hashMap)
-                        .addOnSuccessListener {
-                            redemption(getString(R.string.voucher_3), 10000)
-                            toast("Voucher redeemed successfully")
-                            findNavController().popBackStack()
-                        }
-                        .addOnFailureListener {
-                            toast("Voucher failed to redeem")
-                        }
-                } else {
-                    toast("Insufficient points")
-                }
+                redeem(10000,getString(R.string.voucher_3))
             }
         }
     }
@@ -132,8 +72,44 @@ class MyRewardFragment : Fragment() {
 
         myRedemptionViewModel.addRedemption(redemption)
         database.getReference("Redemption").child(key).setValue(redemption)
-//        ref.setValue(redemption)
-//        myRedemptionViewModel.uploadRedemption(key)
+    }
+
+    private fun redeem(point: Int, voucher: String) {
+        auth = Firebase.auth
+        var points = 0
+        val builder = AlertDialog.Builder(requireContext())
+
+        builder.setMessage("Are you sure you want to claim?")
+            .setCancelable(false)
+            .setPositiveButton("Yes") { dialog, id ->
+                if (sharedPref.getInt(getString(R.string.point), 0) >= point) {
+                    points = sharedPref.getInt(getString(R.string.point), 0) - point
+
+                    val role = sharedPref.getString(getString(R.string.role), "")
+
+                    val hashMap: HashMap<String, Any> = HashMap()
+                    hashMap["point"] = points
+
+                    Firebase.database.getReference("Users").child(role!!).child(auth.uid!!)
+                        .updateChildren(hashMap)
+                        .addOnSuccessListener {
+                            redemption(voucher, point)
+                            toast("Voucher redeemed successfully")
+                            findNavController().popBackStack()
+                        }
+                        .addOnFailureListener {
+                            toast("Voucher failed to redeem")
+                        }
+                } else {
+                    toast("Insufficient points")
+                }
+            }
+            .setNegativeButton("No") { dialog, id ->
+                // Dismiss the dialog
+                dialog.dismiss()
+            }
+        val alert = builder.create()
+        alert.show()
     }
 
     private fun toast(s: String) {

@@ -2,12 +2,13 @@ package rsd.mad.mykasihv1.ui.community
 
 import android.graphics.Typeface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TableRow
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -19,7 +20,7 @@ import rsd.mad.mykasihv1.databinding.FragmentLeaderboardBinding
 import rsd.mad.mykasihv1.models.User
 import java.text.NumberFormat
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 class LeaderboardFragment : Fragment() {
 
@@ -99,6 +100,7 @@ class LeaderboardFragment : Fragment() {
                 val headerRank = TextView(context)
                 val headerName = TextView(context)
                 val headerPoints = TextView(context)
+
                 headerRank.text = getString(R.string.rank)
                 headerName.text = getString(R.string.name)
                 headerPoints.text = getString(R.string.point)
