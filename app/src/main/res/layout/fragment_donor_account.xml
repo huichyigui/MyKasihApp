@@ -44,17 +44,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblDonorName" />
 
-    <ImageView
-        android:id="@+id/btnEdit"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="148dp"
-        android:src="@drawable/ic_edit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.437"
-        app:layout_constraintStart_toEndOf="@+id/lblDonorEmail"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <View
         android:id="@+id/divider3"
         android:layout_width="409dp"
@@ -66,7 +55,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblDonorEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/btnEditDonor" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -152,5 +141,16 @@
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnEditDonor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawableLeft="@drawable/ic_edit_white"
+        android:text="@string/edit_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblDonorEmail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

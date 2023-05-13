@@ -47,7 +47,7 @@ class DoneeAccountFragment : Fragment() {
             lblDoneeName.text = sharedPref.getString(getString(R.string.name), "")
             lblDoneeEmail.text = sharedPref.getString(getString(R.string.email), "")
 
-            btnEdit.setOnClickListener { findNavController().navigate(R.id.action_nav_donee_account_to_nav_donee_edit_profile) }
+            btnEditDonee.setOnClickListener { findNavController().navigate(R.id.action_nav_donee_account_to_nav_donee_edit_profile) }
             btnLogout.setOnClickListener {
                 auth.signOut()
                 sharedPref.edit().clear().commit()

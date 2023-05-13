@@ -53,7 +53,7 @@ class DonorAccountFragment : Fragment() {
             lblDonorName.text = sharedPref.getString(getString(R.string.name), "")
             lblDonorEmail.text = sharedPref.getString(getString(R.string.email), "")
 
-            btnEdit.setOnClickListener { findNavController().navigate(R.id.action_nav_donor_account_to_nav_donor_edit_profile) }
+            btnEditDonor.setOnClickListener { findNavController().navigate(R.id.action_nav_donor_account_to_nav_donor_edit_profile) }
             btnLogout.setOnClickListener {
                 auth.signOut()
                 sharedPref.edit().clear().commit()
