@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -55,8 +56,26 @@ class CommunityFragment : Fragment() {
 
         with(binding) {
             role = sharedPref.getString(getString(R.string.role), "")!!
+
             if (role == getString(R.string.donor)) {
-                lblPointCommunity.text = "${sharedPref.getInt(getString(R.string.point), 0)} points"
+
+                auth = Firebase.auth
+                val ref = Firebase.database.getReference("Users").child("Donor")
+                ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for (donorSnapshot in snapshot.children) {
+                            if (donorSnapshot.key == auth.uid!!) {
+                                val point = donorSnapshot.child("point").value.toString()
+                                lblPointCommunity.text = "$point points"
+                                sharedPref.edit().putInt(getString(R.string.point), point.toInt()).apply()
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+
+                    }
+                })
                 btnLeaderboard.setOnClickListener { findNavController().navigate(R.id.action_nav_donor_community_to_nav_donor_leaderboard) }
             } else {
                 lblPointCommunity.visibility = View.GONE
@@ -74,13 +93,17 @@ class CommunityFragment : Fragment() {
                         communityArrayList.add(model!!)
                     }
                 }
-                if (communityArrayList.isNotEmpty()) {
-                    communityList = CommunityList(requireActivity(), communityArrayList)
-                    binding.rvCommunity.adapter = communityList
-                    binding.tvViewCountCommunity.isVisible = false
-                } else {
-                    binding.tvViewCountCommunity.text = getString(R.string.no_record)
-                    binding.tvViewCountCommunity.isVisible = true
+
+                // Ensure the fragment is attached to an activity before calling requireActivity()
+                activity?.let {
+                    if (communityArrayList.isNotEmpty()) {
+                        communityList = CommunityList(requireActivity(), communityArrayList)
+                        binding.rvCommunity.adapter = communityList
+                        binding.tvViewCountCommunity.isVisible = false
+                    } else {
+                        binding.tvViewCountCommunity.text = getString(R.string.no_record)
+                        binding.tvViewCountCommunity.isVisible = true
+                    }
                 }
             }
 
@@ -88,6 +111,18 @@ class CommunityFragment : Fragment() {
 
             }
         })
+    }
+
+    private var activity: AppCompatActivity? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity = context as? AppCompatActivity
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        activity = null
     }
 
     private fun loadUserInfo() {

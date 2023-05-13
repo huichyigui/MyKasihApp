@@ -174,7 +174,7 @@ class DonationDetailFragment : Fragment() {
 
         var points = donor.amount
         points = points.replace(("[^\\d.]").toRegex(), "")
-        pointEarned = calPoints(points.toInt())
+        pointEarned = calPoints(points.toDouble().toInt())
 
         val ref = database.getReference("Donation")
         ref.orderByChild("token").equalTo(donor!!.token).addListenerForSingleValueEvent(object : ValueEventListener {
@@ -186,7 +186,8 @@ class DonationDetailFragment : Fragment() {
                     donorRef.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             val currentPoint = dataSnapshot.child("point").value as Long
-                            donorRef.child("point").setValue(currentPoint + pointEarned)
+                            val totPoint = currentPoint + pointEarned
+                            donorRef.child("point").setValue(totPoint)
 
                             retrieveDeviceToken(donor)
 

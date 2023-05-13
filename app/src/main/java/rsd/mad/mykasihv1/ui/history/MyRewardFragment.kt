@@ -3,21 +3,28 @@ package rsd.mad.mykasihv1.ui.history
 import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TableRow
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.FragmentMyRewardBinding
 import rsd.mad.mykasihv1.models.Redemption
+import rsd.mad.mykasihv1.models.User
 import rsd.mad.mykasihv1.room.RedemptionViewModel
 import java.text.NumberFormat
 import java.util.*
@@ -46,7 +53,23 @@ class MyRewardFragment : Fragment() {
         )
 
         with(binding) {
-            lblReward.text = NumberFormat.getNumberInstance(Locale.US).format(sharedPref.getInt(getString(R.string.point), 0))
+            auth = Firebase.auth
+            val ref = Firebase.database.getReference("Users").child("Donor")
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (donorSnapshot in snapshot.children) {
+                        if (donorSnapshot.key == auth.uid!!) {
+                            val point = donorSnapshot.child("point").value.toString()
+                            lblReward.text = point
+                            sharedPref.edit().putInt(getString(R.string.point), point.toInt()).apply()
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            })
 
             btnRedeem1.setOnClickListener {
                 redeem(500000,getString(R.string.voucher_1))
