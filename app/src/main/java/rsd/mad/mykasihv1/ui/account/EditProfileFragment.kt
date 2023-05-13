@@ -14,6 +14,7 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
@@ -69,6 +70,7 @@ class EditProfileFragment : Fragment() {
     private var email = ""
     private var mobile = ""
     private var address = ""
+    private var city = ""
     private var currentPass = ""
     private var newPass = ""
     private fun edit() {
@@ -80,6 +82,7 @@ class EditProfileFragment : Fragment() {
             email = edtEmail.text.toString().trim()
             mobile = edtMobile.text.toString().trim()
             address = edtAddress.text.toString().trim()
+            city = spCityEdit.selectedItem as String
             currentPass = edtCurrentPass.text.toString()
             newPass = edtNewPass.text.toString()
 
@@ -192,6 +195,7 @@ class EditProfileFragment : Fragment() {
                                 hashMap["email"] = "$email"
                                 hashMap["mobile"] = "$mobile"
                                 hashMap["address"] = "$address"
+                                hashMap["city"] = "$city"
                                 if (imageUri != null)
                                     hashMap["profileImage"] = uploadedImageUrl
 
@@ -301,6 +305,14 @@ class EditProfileFragment : Fragment() {
                 binding.edtAddress.setText(getString(getString(R.string.address), ""))
                 binding.edtMobile.setText(getString(getString(R.string.mobile), ""))
                 binding.edtEmail.setText(getString(getString(R.string.email), ""))
+
+                val index = getSpinnerItemIndex(binding.spCityEdit, "${getString(getString(R.string.city), "")}")
+                if (index != -1) {
+                    binding.spCityEdit.setSelection(index)
+                } else {
+                    binding.spCityEdit.setSelection(0)
+                }
+
                 var profileImage = sharedPref.getString(getString(R.string.profileImage), "")
                 if (profileImage == "")
                     binding.ivProfile.setImageResource(R.drawable.empty)
@@ -311,5 +323,15 @@ class EditProfileFragment : Fragment() {
                 }
             }
         }
+    }
+
+    fun getSpinnerItemIndex(spinner: Spinner, itemName: String): Int {
+        for (i in 0 until spinner.adapter.count) {
+            val item = spinner.adapter.getItem(i).toString()
+            if (item == itemName) {
+                return i
+            }
+        }
+        return -1
     }
 }

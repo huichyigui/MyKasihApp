@@ -111,9 +111,22 @@
             android:text="D-1-5 Megan Avenue 1 189 Jalan Tun Razak" />
 
         <TextView
+            android:id="@+id/textView27"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/city" />
+
+        <Spinner
+            android:id="@+id/spCityEdit"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:entries="@array/cities" />
+
+        <TextView
             android:id="@+id/textView47"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="@string/current_password" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -140,6 +153,7 @@
             android:id="@+id/textView48"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="@string/new_password" />
 
         <com.google.android.material.textfield.TextInputLayout
