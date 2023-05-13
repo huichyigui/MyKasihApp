@@ -22,6 +22,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.Task
@@ -67,7 +68,11 @@ class DonationDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         auth = Firebase.auth
-        sharedPref = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+
+        // Ensure the fragment is attached to an activity before calling requireActivity()
+        activity?.let {
+            sharedPref = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        }
 
         val args = NavHostFragment.findNavController(this).currentBackStackEntry?.arguments
         val donor = args?.getSerializable("donor") as? Donation
@@ -122,6 +127,19 @@ class DonationDetailFragment : Fragment() {
             btnClaimDonation.setOnClickListener { validateData() }
         }
     }
+
+    private var activity: AppCompatActivity? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity = context as? AppCompatActivity
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        activity = null
+    }
+
     private fun validateData() {
         val args = NavHostFragment.findNavController(this).currentBackStackEntry?.arguments
         val donor = args?.getSerializable("donor") as? Donation

@@ -65,6 +65,7 @@ class MyRedeemFragment : Fragment() {
                     }
                 }
                 binding.progressBar5.visibility = View.GONE
+
                 // Ensure the fragment is attached to an activity before calling requireActivity()
                 activity?.let {
                     if (redemptionArrayList.isNotEmpty()) {

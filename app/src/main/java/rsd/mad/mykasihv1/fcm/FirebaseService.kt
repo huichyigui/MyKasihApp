@@ -38,6 +38,7 @@ class FirebaseService: FirebaseMessagingService() {
         token = newToken
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
@@ -50,7 +51,7 @@ class FirebaseService: FirebaseMessagingService() {
         }
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE)
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(message.data["title"])
             .setContentText(message.data["message"])

@@ -1,5 +1,6 @@
 package rsd.mad.mykasihv1.ui.history
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -62,17 +64,21 @@ class MyRequestFragment : Fragment() {
                     requestsArrayList.add(model!!)
                 }
                 binding.progressBar8.visibility = View.GONE
-                if (requestsArrayList.isNotEmpty()) {
-                    if (s == "DESCENDING")
-                        requestsArrayList.reverse()
-                    requestDonationList = RequestDonationList(requireActivity(), requestsArrayList)
-                    binding.rvRequests.adapter = requestDonationList
-                    binding.tvViewCountRequest.isVisible = false
-                    binding.btnSortRequest.isVisible = true
-                } else {
-                    binding.tvViewCountRequest.text = getString(R.string.no_record)
-                    binding.tvViewCountRequest.isVisible = true
-                    binding.btnSortRequest.isVisible = false
+
+                // Ensure the fragment is attached to an activity before calling requireActivity()
+                activity?.let {
+                    if (requestsArrayList.isNotEmpty()) {
+                        if (s == "DESCENDING")
+                            requestsArrayList.reverse()
+                        requestDonationList = RequestDonationList(requireActivity(), requestsArrayList)
+                        binding.rvRequests.adapter = requestDonationList
+                        binding.tvViewCountRequest.isVisible = false
+                        binding.btnSortRequest.isVisible = true
+                    } else {
+                        binding.tvViewCountRequest.text = getString(R.string.no_record)
+                        binding.tvViewCountRequest.isVisible = true
+                        binding.btnSortRequest.isVisible = false
+                    }
                 }
             }
 
@@ -80,6 +86,18 @@ class MyRequestFragment : Fragment() {
 
             }
         })
+    }
+
+    private var activity: AppCompatActivity? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity = context as? AppCompatActivity
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        activity = null
     }
 
     private fun showSortDialog() {
