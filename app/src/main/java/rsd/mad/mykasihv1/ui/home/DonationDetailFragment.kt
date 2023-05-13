@@ -122,20 +122,6 @@ class DonationDetailFragment : Fragment() {
             btnClaimDonation.setOnClickListener { validateData() }
         }
     }
-
-    private fun calPoints(amount:Int):Int{
-        var points = 0
-
-        when (amount) {
-            in 1 .. 49 -> points = 100
-            in 50 .. 100 -> points = 1000
-            in 101 .. 200 -> points = 5000
-            in 201 .. 500 -> points = 8000
-            else -> points = 10000
-        }
-
-        return points
-    }
     private fun validateData() {
         val args = NavHostFragment.findNavController(this).currentBackStackEntry?.arguments
         val donor = args?.getSerializable("donor") as? Donation
