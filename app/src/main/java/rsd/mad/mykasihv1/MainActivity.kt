@@ -41,6 +41,15 @@ class MainActivity : AppCompatActivity() {
         progressDialog.setCanceledOnTouchOutside(false)
 
         if (auth.currentUser != null) {
+            val role = sharedPref.getString(getString(R.string.role), null)
+            if (role == getString(R.string.donor)) {
+                startActivity(Intent(this, DonorDashboardActivity::class.java))
+                this.finish()
+            } else if (role == getString(R.string.donee)){
+                startActivity(Intent(this, DoneeDashboardActivity::class.java))
+                this.finish()
+            }
+
 //            if (sharedPref.getString(
 //                    getString(R.string.role),
 //                    getString(R.string.donor)
@@ -52,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 //                startActivity(Intent(this, DoneeDashboardActivity::class.java))
 //                this.finish()
 //            }
-            auth.signOut()
+//            auth.signOut()
         }
 
         binding.btnLogin.setOnClickListener { login() }
