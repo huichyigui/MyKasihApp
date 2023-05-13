@@ -25,13 +25,13 @@
         android:id="@+id/lblWelcomeDonee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:text="Welcome Hunger Spot"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintHorizontal_bias="0.076"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
