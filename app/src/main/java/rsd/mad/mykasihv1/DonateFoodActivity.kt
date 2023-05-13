@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.provider.CalendarContract.CalendarAlerts
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -66,10 +67,13 @@ class DonateFoodActivity : AppCompatActivity() {
                     day
                 )
 
-                val now = System.currentTimeMillis()
-                datePickerDialog.datePicker.minDate = now
+                val tomorrowCalendar = Calendar.getInstance()
+                tomorrowCalendar.add(Calendar.DAY_OF_YEAR, 1)
+                val tomorrow = tomorrowCalendar.timeInMillis
+//                val now = System.currentTimeMillis()
+                datePickerDialog.datePicker.minDate = tomorrow
                 datePickerDialog.datePicker.maxDate =
-                    now + (1000 * 60 * 60 * 24 * 7) // After 7 Days from Now
+                    tomorrow + (1000 * 60 * 60 * 24 * 7) // After 7 Days from Now
                 datePickerDialog.show()
             }
             btnTime.setOnClickListener {
@@ -77,12 +81,12 @@ class DonateFoodActivity : AppCompatActivity() {
                 val minute = calendar.get(MINUTE)
                 val timePickerDialog = TimePickerDialog(
                     this@DonateFoodActivity,
-                    { view, hour, minute ->
+                    { _, hour, minute ->
                         var am_pm = if (hour < 12)
                             "AM"
                         else
                             "PM"
-                        btnTime.text = String.format("%2d:%2d %s", hour, minute, am_pm)
+                        btnTime.text = String.format("%02d:%02d %s", hour, minute, am_pm)
                     }, hour, minute, false
                 )
                 timePickerDialog.show()

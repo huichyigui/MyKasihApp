@@ -76,6 +76,7 @@ class DoneeHomeFragment : Fragment() {
                     }
                 }
                 if (donorArrayList.isNotEmpty()) {
+                    donorArrayList.sortByDescending { it.timestamp }
                     donorList = DonorList(requireActivity(), donorArrayList)
                     binding.rvDonor.adapter = donorList
                     binding.tvViewCountDonee.isVisible = false
