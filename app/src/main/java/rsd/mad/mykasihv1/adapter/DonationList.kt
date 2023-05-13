@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import rsd.mad.mykasihv1.Helper
@@ -46,9 +47,17 @@ class DonationList : RecyclerView.Adapter<DonationList.HolderDonation> {
             var action = MyDonationFragmentDirections.actionNavMyDonationToNavDonorDonationDetail(model)
             Navigation.findNavController(holder.itemView).navigate(action)
         }
+
+        holder.cvDonation.strokeWidth = 10
+        if (model.status == "Pending") {
+            holder.cvDonation.strokeColor = ContextCompat.getColor(context, android.R.color.holo_red_light)
+        } else if (model.status == "Received") {
+            holder.cvDonation.strokeColor = ContextCompat.getColor(context, android.R.color.holo_green_light)
+        }
     }
 
     inner class HolderDonation(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val cvDonation = binding.cvDonation
         val tvDoneeNameDonation = binding.tvDoneeNameDonation
         val tvLocationDonation = binding.tvLocationDonation
         val tvTimestampDonation = binding.tvTimestampDonation

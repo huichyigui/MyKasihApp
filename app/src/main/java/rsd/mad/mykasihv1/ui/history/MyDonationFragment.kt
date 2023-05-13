@@ -73,12 +73,14 @@ class MyDonationFragment : Fragment() {
                             donationArrayList.reverse()
                         donationList = DonationList(requireActivity(), donationArrayList)
                         binding.rvDonation.adapter = donationList
-                        binding.tvViewCount.isVisible = false
-                        binding.btnSortDonation.isVisible = true
+                        binding.tvViewCount.visibility = View.GONE
+                        binding.cgLegends.visibility = View.VISIBLE
+                        binding.btnSortDonation.visibility = View.VISIBLE
                     } else {
                         binding.tvViewCount.text = getString(R.string.no_record)
-                        binding.tvViewCount.isVisible = true
-                        binding.btnSortDonation.isVisible = false
+                        binding.tvViewCount.visibility = View.VISIBLE
+                        binding.btnSortDonation.visibility = View.GONE
+                        binding.cgLegends.visibility = View.GONE
                     }
                 }
             }
