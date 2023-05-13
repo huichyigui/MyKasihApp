@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.CalendarContract.CalendarAlerts
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -43,6 +44,7 @@ class DonateFoodActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDonateFoodBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         auth = Firebase.auth
         sharedPref = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
@@ -93,6 +95,11 @@ class DonateFoodActivity : AppCompatActivity() {
             }
             btnSubmit.setOnClickListener { validateData() }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        onBackPressed()
+        return super.onOptionsItemSelected(item)
     }
 
     private var category = ""
