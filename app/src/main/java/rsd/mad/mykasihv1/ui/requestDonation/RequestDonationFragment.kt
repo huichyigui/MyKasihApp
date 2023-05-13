@@ -126,7 +126,7 @@ class RequestDonationFragment : Fragment() {
                 val city = "${sharedPref.getString(getString(R.string.city), "")}"
 
                 val requestDonation =
-                    RequestDonation(auth.uid!!, name, description, pax, uploadedImageUrl, city, timestamp)
+                    RequestDonation(auth.uid!!, name, description, pax, uploadedImageUrl, city, getString(R.string.active), timestamp)
 
                 database.getReference("RequestDonation").child(auth.uid!!).child("$timestamp")
                     .setValue(requestDonation)

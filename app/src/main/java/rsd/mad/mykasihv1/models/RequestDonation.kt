@@ -9,6 +9,7 @@ class RequestDonation : Serializable {
     var pax : Int = 0
     var orgImage : String = ""
     var city : String = ""
+    var status : String = ""
     var timestamp : Long = 0
 
     constructor()
@@ -19,6 +20,7 @@ class RequestDonation : Serializable {
         pax: Int,
         orgImage: String,
         city: String,
+        status : String,
         timestamp: Long
     ) {
         this.doneeId = doneeId
@@ -27,6 +29,7 @@ class RequestDonation : Serializable {
         this.pax = pax
         this.orgImage = orgImage
         this.city = city
+        this.status = status
         this.timestamp = timestamp
     }
 

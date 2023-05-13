@@ -145,6 +145,9 @@
     <string name="err_same_password">Current password and new password cannot be same</string>
     <string name="remember_me">Remember Me</string>
     <string name="err_time">Please select a time after the current time</string>
+    <string name="active">Active</string>
+    <string name="activate">Activate</string>
+    <string name="deactivate">Deactivate</string>
 
     <string-array name="cities">
         <item>Kuala Lumpur</item>

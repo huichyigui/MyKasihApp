@@ -70,9 +70,10 @@ class DonorHomeFragment : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (doneeIdSnapshot in snapshot.children) {
                     for (requestIdSnapshot in doneeIdSnapshot.children) {
-                        if (requestIdSnapshot.child("city").value.toString() == city) {
-                            val model = requestIdSnapshot.getValue(RequestDonation::class.java)
-                            doneeArrayList.add(model!!)
+                        if (requestIdSnapshot.child("city").value.toString() == city &&
+                            requestIdSnapshot.child("status").value.toString() == getString(R.string.active)) {
+                                val model = requestIdSnapshot.getValue(RequestDonation::class.java)
+                                doneeArrayList.add(model!!)
                         }
                     }
                 }
