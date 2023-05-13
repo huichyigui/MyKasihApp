@@ -63,16 +63,21 @@ class RegisterActivity : AppCompatActivity() {
                 isValid = false
             }
 
+            val phoneRegex = Regex("^01\\d-\\d{7,8}$")
             if (mobile.isEmpty()) {
                 edtMobileRegister.error = getString(R.string.err_empty)
                 isValid = false
-            } else if (!Patterns.PHONE.matcher(mobile).matches()) {
+            } else if (!phoneRegex.matches(mobile)) {
                 edtMobileRegister.error = getString(R.string.err_mobile)
                 isValid = false
             }
 
+            val passwordRegex = Regex(".{6,}")
             if (password.isEmpty()) {
                 edtPasswordRegister.error = getString(R.string.err_empty)
+                isValid = false
+            } else if (!passwordRegex.matches(password)) {
+                edtPasswordRegister.error = getString(R.string.err_password)
                 isValid = false
             }
 

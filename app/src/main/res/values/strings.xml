@@ -138,6 +138,9 @@
     <string name="eg_name">e.g. John Doe</string>
     <string name="eg_email">e.g. johndoe@gmail.com</string>
     <string name="eg_mobile">e.g. 012-8525897</string>
+    <string name="eg_house">e.g. 15</string>
+    <string name="eg_street">e.g. Jalan Genting Klang</string>
+
     <string name="hint_password">At least 6 characters</string>
     <string name="err_same_password">Current password and new password cannot be same</string>
 
