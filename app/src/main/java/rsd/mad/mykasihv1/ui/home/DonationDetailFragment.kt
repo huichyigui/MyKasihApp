@@ -148,15 +148,39 @@ class DonationDetailFragment : Fragment() {
         }
     }
 
-    private fun calPoints(amount:Int):Int{
-        var points = 0
 
-        when (amount) {
-            in 1 .. 49 -> points = 100
-            in 50 .. 100 -> points = 1000
-            in 101 .. 200 -> points = 5000
-            in 201 .. 500 -> points = 8000
-            else -> points = 10000
+    private fun calPoints(amount:String):Int{
+        var points = 0
+        val words = amount.split("\\s".toRegex()).toTypedArray()
+        var amt = 0
+
+        if(words[1] == "unit"){
+            amt = words[0].toDouble().toInt()
+            points = when (amt) {
+                in 1 .. 49 -> 100
+                in 50 .. 100 -> 1000
+                in 101 .. 200 -> 5000
+                in 201 .. 500 -> 8000
+                else -> 10000
+            }
+        }else if(words[1] == "kg"){
+            amt = words[0].toDouble().toInt()
+            points = when (amt) {
+                in 1 .. 49 -> 1000
+                in 50 .. 100 -> 10000
+                in 101 .. 200 -> 50000
+                in 201 .. 500 -> 80000
+                else -> 100000
+            }
+        }else{
+            amt = words[1].toDouble().toInt()
+            points = when (amt) {
+                in 1 .. 49 -> 500
+                in 50 .. 100 -> 5000
+                in 101 .. 200 -> 10000
+                in 201 .. 500 -> 16000
+                else -> 30000
+            }
         }
 
         return points
@@ -172,9 +196,8 @@ class DonationDetailFragment : Fragment() {
         hashMap["status"] = "Received"
         hashMap["proofImage"] = uploadedImageUrl
 
-        var points = donor.amount
-        points = points.replace(("[^\\d.]").toRegex(), "")
-        pointEarned = calPoints(points.toDouble().toInt())
+        var amount = donor.amount
+        pointEarned = calPoints(amount)
 
         val ref = database.getReference("Donation")
         ref.orderByChild("token").equalTo(donor!!.token).addListenerForSingleValueEvent(object : ValueEventListener {

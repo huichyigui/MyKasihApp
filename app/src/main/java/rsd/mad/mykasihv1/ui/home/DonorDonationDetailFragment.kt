@@ -2,26 +2,21 @@ package rsd.mad.mykasihv1.ui.home
 
 import android.graphics.Typeface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TableRow
 import android.widget.TextView
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import rsd.mad.mykasihv1.Helper
 import rsd.mad.mykasihv1.Helper.Companion.toPx
 import rsd.mad.mykasihv1.R
 import rsd.mad.mykasihv1.databinding.FragmentDonorDonationDetailBinding
 import rsd.mad.mykasihv1.models.Donation
+
 
 class DonorDonationDetailFragment : Fragment() {
 

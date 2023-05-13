@@ -1,5 +1,6 @@
 package rsd.mad.mykasihv1.ui.history
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -62,17 +64,21 @@ class MyDonationFragment : Fragment() {
                         donationArrayList.add(model!!)
                     }
                 }
-                if (donationArrayList.isNotEmpty()) {
-                    if (s == "DESCENDING")
-                        donationArrayList.reverse()
-                    donationList = DonationList(requireActivity(), donationArrayList)
-                    binding.rvDonation.adapter = donationList
-                    binding.tvViewCount.isVisible = false
-                    binding.btnSortDonation.isVisible = true
-                } else {
-                    binding.tvViewCount.text = getString(R.string.no_record)
-                    binding.tvViewCount.isVisible = true
-                    binding.btnSortDonation.isVisible = false
+
+                // Ensure the fragment is attached to an activity before calling requireActivity()
+                activity?.let {
+                    if (donationArrayList.isNotEmpty()) {
+                        if (s == "DESCENDING")
+                            donationArrayList.reverse()
+                        donationList = DonationList(requireActivity(), donationArrayList)
+                        binding.rvDonation.adapter = donationList
+                        binding.tvViewCount.isVisible = false
+                        binding.btnSortDonation.isVisible = true
+                    } else {
+                        binding.tvViewCount.text = getString(R.string.no_record)
+                        binding.tvViewCount.isVisible = true
+                        binding.btnSortDonation.isVisible = false
+                    }
                 }
             }
 
@@ -80,6 +86,18 @@ class MyDonationFragment : Fragment() {
 
             }
         })
+    }
+
+    private var activity: AppCompatActivity? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity = context as? AppCompatActivity
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        activity = null
     }
 
     private fun showSortDialog() {
