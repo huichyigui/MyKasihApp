@@ -49,6 +49,7 @@
             android:paddingTop="10dp"
             android:text="@string/view_detail"
             app:drawableLeftCompat="@drawable/ic_view" />
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
