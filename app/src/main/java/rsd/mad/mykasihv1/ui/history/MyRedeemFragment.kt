@@ -53,6 +53,7 @@ class MyRedeemFragment : Fragment() {
     }
 
     private fun showData(s: String) {
+        binding.progressBar5.visibility = View.VISIBLE
         var ref = Firebase.database.getReference("Redemption")
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -63,7 +64,7 @@ class MyRedeemFragment : Fragment() {
                         redemptionArrayList.add(model!!)
                     }
                 }
-
+                binding.progressBar5.visibility = View.GONE
                 // Ensure the fragment is attached to an activity before calling requireActivity()
                 activity?.let {
                     if (redemptionArrayList.isNotEmpty()) {

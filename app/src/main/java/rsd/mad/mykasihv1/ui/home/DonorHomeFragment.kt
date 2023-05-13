@@ -63,6 +63,8 @@ class DonorHomeFragment : Fragment() {
 
         val city = sharedPref.getString(getString(R.string.city), "")
 
+        binding.progressBar2.visibility = View.VISIBLE
+
         val ref = Firebase.database.getReference("RequestDonation")
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -74,6 +76,7 @@ class DonorHomeFragment : Fragment() {
                         }
                     }
                 }
+                binding.progressBar2.visibility = View.GONE
                 doneeList = DoneeList(requireActivity(), doneeArrayList)
                 binding.rvDonee.adapter = doneeList
             }

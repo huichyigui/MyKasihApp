@@ -54,6 +54,7 @@ class MyDonationFragment : Fragment() {
     }
 
     private fun showData(s: String) {
+        binding.progressBar4.visibility = View.VISIBLE
         var ref = Firebase.database.getReference("Donation")
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -64,7 +65,7 @@ class MyDonationFragment : Fragment() {
                         donationArrayList.add(model!!)
                     }
                 }
-
+                binding.progressBar4.visibility = View.GONE
                 // Ensure the fragment is attached to an activity before calling requireActivity()
                 activity?.let {
                     if (donationArrayList.isNotEmpty()) {

@@ -52,6 +52,7 @@ class MyRequestFragment : Fragment() {
     }
 
     private fun showData(s: String) {
+        binding.progressBar8.visibility = View.VISIBLE
         val ref = Firebase.database.getReference("RequestDonation").child(auth.uid!!)
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -60,6 +61,7 @@ class MyRequestFragment : Fragment() {
                     val model = request.getValue(RequestDonation::class.java)
                     requestsArrayList.add(model!!)
                 }
+                binding.progressBar8.visibility = View.GONE
                 if (requestsArrayList.isNotEmpty()) {
                     if (s == "DESCENDING")
                         requestsArrayList.reverse()

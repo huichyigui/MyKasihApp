@@ -60,14 +60,15 @@ class CommunityFragment : Fragment() {
             if (role == getString(R.string.donor)) {
 
                 auth = Firebase.auth
+
                 val ref = Firebase.database.getReference("Users").child("Donor")
                 ref.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         for (donorSnapshot in snapshot.children) {
                             if (donorSnapshot.key == auth.uid!!) {
-                                val point = donorSnapshot.child("point").value.toString()
-                                lblPointCommunity.text = "$point points"
-                                sharedPref.edit().putInt(getString(R.string.point), point.toInt()).apply()
+                                val point = donorSnapshot.child("point").value
+                                lblPointCommunity.text = String.format("%,d points", point)
+                                sharedPref.edit().putInt(getString(R.string.point), point.toString().toInt()).apply()
                             }
                         }
                     }
@@ -83,6 +84,7 @@ class CommunityFragment : Fragment() {
             }
         }
 
+        binding.progressBar.visibility = View.VISIBLE
         val ref = Firebase.database.getReference("Donation")
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -94,6 +96,7 @@ class CommunityFragment : Fragment() {
                     }
                 }
 
+                binding.progressBar.visibility = View.GONE
                 // Ensure the fragment is attached to an activity before calling requireActivity()
                 activity?.let {
                     if (communityArrayList.isNotEmpty()) {

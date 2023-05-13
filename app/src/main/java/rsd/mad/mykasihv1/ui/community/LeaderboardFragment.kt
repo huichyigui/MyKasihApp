@@ -84,6 +84,7 @@ class LeaderboardFragment : Fragment() {
     }
 
     private fun populateLeaderboard() {
+        binding.progressBar3.visibility = View.VISIBLE
         val donorsList = mutableListOf<User>()
         val ref = Firebase.database.getReference("Users").child("Donor")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -93,6 +94,7 @@ class LeaderboardFragment : Fragment() {
                     donorsList.add(donor!!)
                 }
 
+                binding.progressBar3.visibility = View.VISIBLE
                 donorsList.sortByDescending { it.point }
 
                 val tableLayout = binding.tblLeaderboard

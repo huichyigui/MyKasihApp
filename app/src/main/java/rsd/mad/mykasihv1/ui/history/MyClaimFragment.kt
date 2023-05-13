@@ -72,6 +72,7 @@ class MyClaimFragment : Fragment() {
     }
 
     private fun showData(s: String) {
+        binding.progressBar7.visibility = View.VISIBLE
         val ref = Firebase.database.getReference("Donation")
         ref.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -84,6 +85,7 @@ class MyClaimFragment : Fragment() {
                         }
                     }
                 }
+                binding.progressBar7.visibility = View.GONE
                 if (claimArrayList.isNotEmpty()) {
                     if (s == "DESCENDING")
                         claimArrayList.reverse()

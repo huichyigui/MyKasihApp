@@ -62,7 +62,7 @@ class DoneeHomeFragment : Fragment() {
         }
 
         donorArrayList = ArrayList()
-
+        binding.progressBar6.visibility = View.VISIBLE
         val ref = Firebase.database.getReference("Donation")
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -75,6 +75,7 @@ class DoneeHomeFragment : Fragment() {
                         }
                     }
                 }
+                binding.progressBar6.visibility = View.GONE
                 if (donorArrayList.isNotEmpty()) {
                     donorArrayList.sortByDescending { it.timestamp }
                     donorList = DonorList(requireActivity(), donorArrayList)

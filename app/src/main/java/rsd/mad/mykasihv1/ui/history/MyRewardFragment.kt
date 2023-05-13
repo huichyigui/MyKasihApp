@@ -35,7 +35,6 @@ class MyRewardFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPref: SharedPreferences
     private val myRedemptionViewModel : RedemptionViewModel by activityViewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,9 +58,9 @@ class MyRewardFragment : Fragment() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (donorSnapshot in snapshot.children) {
                         if (donorSnapshot.key == auth.uid!!) {
-                            val point = donorSnapshot.child("point").value.toString()
-                            lblReward.text = point
-                            sharedPref.edit().putInt(getString(R.string.point), point.toInt()).apply()
+                            val point = donorSnapshot.child("point").value
+                            lblReward.text = String.format("%,d", point)
+                            sharedPref.edit().putInt(getString(R.string.point), point.toString().toInt()).apply()
                         }
                     }
                 }

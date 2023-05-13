@@ -41,8 +41,17 @@ class MainActivity : AppCompatActivity() {
         progressDialog.setCanceledOnTouchOutside(false)
 
         if (auth.currentUser != null) {
-            startActivity(Intent(this, DonorDashboardActivity::class.java))
-            this.finish()
+            if (sharedPref.getString(
+                    getString(R.string.role),
+                    getString(R.string.donor)
+                ) == getString(R.string.donor)
+            ) {
+                startActivity(Intent(this, DonorDashboardActivity::class.java))
+                this.finish()
+            } else {
+                startActivity(Intent(this, DoneeDashboardActivity::class.java))
+                this.finish()
+            }
 //            auth.signOut()
         }
 
