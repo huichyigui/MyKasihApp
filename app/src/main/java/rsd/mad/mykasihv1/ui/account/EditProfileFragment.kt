@@ -325,7 +325,7 @@ class EditProfileFragment : Fragment() {
         }
     }
 
-    fun getSpinnerItemIndex(spinner: Spinner, itemName: String): Int {
+    private fun getSpinnerItemIndex(spinner: Spinner, itemName: String): Int {
         for (i in 0 until spinner.adapter.count) {
             val item = spinner.adapter.getItem(i).toString()
             if (item == itemName) {

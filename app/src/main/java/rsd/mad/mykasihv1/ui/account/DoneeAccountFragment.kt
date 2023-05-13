@@ -50,6 +50,7 @@ class DoneeAccountFragment : Fragment() {
             btnEdit.setOnClickListener { findNavController().navigate(R.id.action_nav_donee_account_to_nav_donee_edit_profile) }
             btnLogout.setOnClickListener {
                 auth.signOut()
+                sharedPref.edit().clear().commit()
 
                 val i = Intent(activity, MainActivity::class.java)
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

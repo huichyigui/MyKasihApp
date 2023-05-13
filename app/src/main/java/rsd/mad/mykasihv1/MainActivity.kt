@@ -34,13 +34,17 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         auth = Firebase.auth
-        sharedPref = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        sharedPref =
+            this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
         progressDialog = ProgressDialog(this)
         progressDialog.setTitle("Please wait")
         progressDialog.setCanceledOnTouchOutside(false)
 
-        if (auth.currentUser != null)
-            auth.signOut()
+        if (auth.currentUser != null) {
+            startActivity(Intent(this, DonorDashboardActivity::class.java))
+            this.finish()
+//            auth.signOut()
+        }
 
         binding.btnLogin.setOnClickListener { login() }
         binding.btnForgotPass.setOnClickListener {
@@ -98,7 +102,6 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
 
-
                     var ref = database.getReference("Users").child("Donor")
                     ref.addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
@@ -122,7 +125,10 @@ class MainActivity : AppCompatActivity() {
                                         putString(getString(R.string.mobile), mobile)
                                         putString(getString(R.string.address), address)
                                         putString(getString(R.string.city), city)
-                                        putString(getString(R.string.role), getString(R.string.donor))
+                                        putString(
+                                            getString(R.string.role),
+                                            getString(R.string.donor)
+                                        )
                                         putString(getString(R.string.password), password)
                                         putString(getString(R.string.profileImage), profileImage)
                                         putInt(getString(R.string.point), point)
@@ -168,7 +174,10 @@ class MainActivity : AppCompatActivity() {
                                         putString(getString(R.string.mobile), mobile)
                                         putString(getString(R.string.address), address)
                                         putString(getString(R.string.city), city)
-                                        putString(getString(R.string.role), getString(R.string.donee))
+                                        putString(
+                                            getString(R.string.role),
+                                            getString(R.string.donee)
+                                        )
                                         putString(getString(R.string.password), password)
                                         putString(getString(R.string.profileImage), profileImage)
                                         putString(getString(R.string.device_token), device)
@@ -207,7 +216,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun generateDeviceToken(uid: String, role: String) {
-        Firebase.messaging.token.addOnCompleteListener { task->
+        Firebase.messaging.token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 toast("Fetching FCM registration token failed")
                 return@addOnCompleteListener
