@@ -79,8 +79,17 @@ class DonorHomeFragment : Fragment() {
                     }
                 }
                 binding.progressBar2.visibility = View.GONE
-                doneeList = DoneeList(requireActivity(), doneeArrayList)
-                binding.rvDonee.adapter = doneeList
+                activity?.let {
+                    if (doneeArrayList.isNotEmpty()) {
+                        doneeArrayList.sortByDescending { it.timestamp }
+                        doneeList = DoneeList(requireActivity(), doneeArrayList)
+                        binding.rvDonee.adapter = doneeList
+                        binding.tvCountDonee.visibility = View.GONE
+                    } else {
+                        binding.tvCountDonee.text = getString(R.string.no_record)
+                        binding.tvCountDonee.visibility = View.VISIBLE
+                    }
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -104,5 +113,17 @@ class DonorHomeFragment : Fragment() {
             }
 
         })
+    }
+
+    private var activity: AppCompatActivity? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity = context as? AppCompatActivity
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        activity = null
     }
 }
