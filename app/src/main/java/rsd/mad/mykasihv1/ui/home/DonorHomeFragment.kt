@@ -68,6 +68,7 @@ class DonorHomeFragment : Fragment() {
         val ref = Firebase.database.getReference("RequestDonation")
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                doneeArrayList.clear()
                 for (doneeIdSnapshot in snapshot.children) {
                     for (requestIdSnapshot in doneeIdSnapshot.children) {
                         if (requestIdSnapshot.child("city").value.toString() == city &&
