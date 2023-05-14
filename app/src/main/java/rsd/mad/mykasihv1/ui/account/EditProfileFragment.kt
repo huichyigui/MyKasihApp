@@ -91,10 +91,14 @@ class EditProfileFragment : Fragment() {
                 isValid = false
             }
 
+            val emailRegex = Regex("^[A-Za-z\\d._%+-]+@[A-Za-z\\d.-]+\\.[A-Z]{2,}$")
             if (email.isEmpty()) {
                 edtEmail.error = getString(R.string.err_empty)
                 isValid = false
             } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                edtEmail.error = getString(R.string.err_email)
+                isValid = false
+            } else if (!emailRegex.matches(email)) {
                 edtEmail.error = getString(R.string.err_email)
                 isValid = false
             }
@@ -140,6 +144,10 @@ class EditProfileFragment : Fragment() {
                     firebaseUser.updatePassword(newPass).addOnCompleteListener {
                         if (it.isSuccessful) {
                             toast("Password updated")
+                            with(sharedPref.edit()) {
+                                putString(getString(R.string.password), newPass)
+                                apply()
+                            }
 
                             // it is signing out the user from the current status once changing password is successful
                             // it is changing the activity and going to the sign in page while clearing the backstack so the user cant come to the current state by back pressing
@@ -168,7 +176,6 @@ class EditProfileFragment : Fragment() {
                 val uriTask: Task<Uri> = taskSnapshot.storage.downloadUrl
                 while (!uriTask.isSuccessful);
                 val uploadedImageUrl = "${uriTask.result}"
-
                 updateProfile(uploadedImageUrl)
             }
             .addOnFailureListener {
@@ -196,12 +203,25 @@ class EditProfileFragment : Fragment() {
                                 hashMap["mobile"] = "$mobile"
                                 hashMap["address"] = "$address"
                                 hashMap["city"] = "$city"
-                                if (imageUri != null)
+                                if (imageUri != null) {
                                     hashMap["profileImage"] = uploadedImageUrl
-
+                                    with(sharedPref.edit()) {
+                                        putString(getString(R.string.profileImage), uploadedImageUrl)
+                                        apply()
+                                    }
+                                }
                                 database.getReference("Users").child(role!!).child(auth.uid!!)
                                     .updateChildren(hashMap)
                                     .addOnSuccessListener {
+                                        with(sharedPref.edit()) {
+                                            putString(getString(R.string.name), name)
+                                            putString(getString(R.string.email), email)
+                                            putString(getString(R.string.mobile), mobile)
+                                            putString(getString(R.string.address), address)
+                                            putString(getString(R.string.city), city)
+                                            apply()
+                                        }
+
                                         toast("Profile updated")
                                         findNavController().popBackStack()
                                     }
