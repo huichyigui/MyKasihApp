@@ -13,7 +13,7 @@
         android:layout_marginTop="8dp"
         android:drawableLeft="@drawable/ic_sort"
         android:text="@string/sort_filter"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSortRequest"
+        app:layout_constraintTop_toBottomOf="@+id/cgStatus"
         tools:listitem="@layout/row_requests" />
 
     <TextView
@@ -51,5 +51,37 @@
         app:layout_constraintHorizontal_bias="0.539"
         app:layout_constraintStart_toStartOf="@+id/rvRequests"
         app:layout_constraintTop_toTopOf="@+id/rvRequests" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSortRequest">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/cpAllRequest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/cpInactive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/inactive"
+            app:chipBackgroundColor="@android:color/holo_red_light" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/cpActive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/active"
+            app:chipBackgroundColor="@android:color/holo_green_light" />
+    </com.google.android.material.chip.ChipGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

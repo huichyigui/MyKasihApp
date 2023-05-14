@@ -148,6 +148,8 @@
     <string name="active">Active</string>
     <string name="activate">Activate</string>
     <string name="deactivate">Deactivate</string>
+    <string name="inactive">Inactive</string>
+    <string name="all">All</string>
 
     <string-array name="cities">
         <item>Kuala Lumpur</item>

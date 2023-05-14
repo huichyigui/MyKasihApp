@@ -1,10 +1,12 @@
 package rsd.mad.mykasihv1.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -56,7 +58,7 @@ class RequestDonationList : RecyclerView.Adapter<RequestDonationList.HolderReque
         holder.tvDescription.text = description
         Picasso.with(context).load(orgImage).placeholder(R.drawable.progress_animation).error(R.drawable.try_later).into(holder.ivOrgImage)
         holder.tvCreatedDate.text = Helper.convertLongToTime(timestamp)
-        holder.tvStatus.text = status
+//        holder.tvStatus.text = status
 
         if (status == "Active"){
             holder.btnStatus.text = "Deactivate"
@@ -64,15 +66,22 @@ class RequestDonationList : RecyclerView.Adapter<RequestDonationList.HolderReque
             holder.btnStatus.text = "Activate"
         }
 
+        holder.cvRequest.strokeWidth = 10
+        if (model.status == "Active") {
+            holder.cvRequest.strokeColor = ContextCompat.getColor(context, android.R.color.holo_green_light)
+        } else if (model.status == "Inactive") {
+            holder.cvRequest.strokeColor = ContextCompat.getColor(context, android.R.color.holo_red_light)
+        }
+
         holder.btnStatus.setOnClickListener {
             val hashMap: HashMap<String, Any> = HashMap()
 
             if (holder.btnStatus.text.toString() == "Activate") {
                 hashMap["status"] = "Active"
-                holder.btnStatus.text = "Deactivate"
+//                holder.btnStatus.text = "Deactivate"
             }else {
                 hashMap["status"] = "Inactive"
-                holder.btnStatus.text = "Activate"
+//                holder.btnStatus.text = "Activate"
             }
 
             Firebase.database.getReference("RequestDonation").child(auth.uid!!).child(timestamp.toString())
@@ -87,12 +96,13 @@ class RequestDonationList : RecyclerView.Adapter<RequestDonationList.HolderReque
     }
 
     inner class HolderRequestDonation(itemView: View): RecyclerView.ViewHolder(itemView) {
-        var tvDoneeName = binding.tvDoneeName
-        var tvDescription = binding.tvDescription
-        var ivOrgImage = binding.ivOrgImage
-        var tvCreatedDate = binding.tvCreatedDate
-        var tvStatus = binding.tvStatus
-        var btnStatus = binding.btnStatus
+        val cvRequest = binding.cvRequest
+        val tvDoneeName = binding.tvDoneeName
+        val tvDescription = binding.tvDescription
+        val ivOrgImage = binding.ivOrgImage
+        val tvCreatedDate = binding.tvCreatedDate
+//        var tvStatus = binding.tvStatus
+        val btnStatus = binding.btnStatus
     }
 
     private fun toast(s: String) {

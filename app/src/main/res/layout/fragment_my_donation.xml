@@ -68,14 +68,20 @@
         app:layout_constraintTop_toBottomOf="@+id/btnSortDonation">
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip"
+            android:id="@+id/cpAllDonation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/cpPending"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pending"
             app:chipBackgroundColor="@android:color/holo_red_light" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip2"
+            android:id="@+id/cpReceived"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Received"

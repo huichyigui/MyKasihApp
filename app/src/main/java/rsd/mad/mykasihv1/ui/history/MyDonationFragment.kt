@@ -50,7 +50,48 @@ class MyDonationFragment : Fragment() {
 
         with(binding) {
             btnSortDonation.setOnClickListener { showSortDialog() }
+            cpPending.setOnClickListener { showDonationBasedOnStatus("Pending") }
+            cpReceived.setOnClickListener { showDonationBasedOnStatus("Received") }
+            cpAllDonation.setOnClickListener { showData("DESCENDING") }
         }
+    }
+
+    private fun showDonationBasedOnStatus(status: String) {
+        binding.progressBar4.visibility = View.VISIBLE
+        var ref = Firebase.database.getReference("Donation")
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                donationArrayList.clear()
+                for (donation in snapshot.children) {
+                    if (donation.child("donorId").value == auth.currentUser?.uid && donation.child("status").value == status) {
+                        val model = donation.getValue(Donation::class.java)
+                        donationArrayList.add(model!!)
+                    }
+                }
+                binding.progressBar4.visibility = View.GONE
+                binding.cgLegends.visibility = View.VISIBLE
+                binding.btnSortDonation.visibility = View.VISIBLE
+
+                // Ensure the fragment is attached to an activity before calling requireActivity()
+                activity?.let {
+                    if (donationArrayList.isNotEmpty()) {
+                        binding.rvDonation.visibility = View.VISIBLE
+                        donationArrayList.reverse()
+                        donationList = DonationList(requireActivity(), donationArrayList)
+                        binding.rvDonation.adapter = donationList
+                        binding.tvViewCount.visibility = View.GONE
+                    } else {
+                        binding.rvDonation.visibility = View.GONE
+                        binding.tvViewCount.text = getString(R.string.no_record)
+                        binding.tvViewCount.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
     }
 
     private fun showData(s: String) {
@@ -69,6 +110,7 @@ class MyDonationFragment : Fragment() {
                 // Ensure the fragment is attached to an activity before calling requireActivity()
                 activity?.let {
                     if (donationArrayList.isNotEmpty()) {
+                        binding.rvDonation.visibility = View.VISIBLE
                         if (s == "DESCENDING")
                             donationArrayList.reverse()
                         donationList = DonationList(requireActivity(), donationArrayList)
@@ -77,6 +119,7 @@ class MyDonationFragment : Fragment() {
                         binding.cgLegends.visibility = View.VISIBLE
                         binding.btnSortDonation.visibility = View.VISIBLE
                     } else {
+                        binding.rvDonation.visibility = View.GONE
                         binding.tvViewCount.text = getString(R.string.no_record)
                         binding.tvViewCount.visibility = View.VISIBLE
                         binding.btnSortDonation.visibility = View.GONE
