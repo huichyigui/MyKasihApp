@@ -55,7 +55,7 @@ class RegisterActivity : AppCompatActivity() {
                 isValid = false
             }
 
-            val emailRegex = Regex("^[A-Za-z\\d._%+-]+@[A-Za-z\\d.-]+\\.[A-Z]{2,}$")
+            val emailRegex = Regex("^[a-zA-Z\\d._%+-]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,}\$")
             if (email.isEmpty()) {
                 edtEmailRegister.error = getString(R.string.err_empty)
                 isValid = false
